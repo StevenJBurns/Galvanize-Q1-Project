@@ -1,0 +1,29 @@
+body {
+
+  background-color: #C7C7C7;
+}
+
+header {
+  height: 48px;
+}
+
+nav {
+
+}
+
+#canvas-wrapper {
+  margin: auto;
+  text-align: center;
+}
+
+#canvasSystem {
+  margin: auto;
+  border-width: 4px;
+  border-style: solid;
+  border-color: darkblue;
+  display: block;
+}
+
+footer {
+
+}
