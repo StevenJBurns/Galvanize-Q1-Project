@@ -33,6 +33,16 @@ function drawPlanet(){
   ctx.arc(x, y, 10, 0, Math.PI*2, true);
   ctx.closePath();
   ctx.fill();
+
+  drawOrbit(randomRadius);
+}
+
+function drawOrbit(radius) {
+  ctx.strokeStyle = "white";
+  ctx.beginPath();
+  ctx.arc(320, 320, radius, 0, Math.PI*2, true);
+  ctx.closePath();
+  ctx.stroke();
 }
 
 function createRandomColorRGB(){
