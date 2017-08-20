@@ -22,9 +22,12 @@ ctx.fillStyle = createRandomColorRGB()
 }
 
 function drawPlanet(){
-  ctx.fillStyle = createRandomColorRGB();
-  let x = Math.floor(Math.random() * 320) + 160;
-  let y = Math.floor(Math.random() * 320) + 160;
+  ctx.fillStyle = "white";       //createRandomColorRGB();
+  let randomTheta = Math.random() * 2 * Math.PI;
+  let randomRadius = Math.floor(Math.random() * 320) + 32;
+
+  let x = (Math.cos(randomTheta) * randomRadius) + 320;
+  let y = (Math.sin(randomTheta) * randomRadius) + 320;
 
   ctx.beginPath();
   ctx.arc(x, y, 10, 0, Math.PI*2, true);
