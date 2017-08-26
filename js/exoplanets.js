@@ -4,40 +4,52 @@
 let canvas = document.getElementById("canvasSystem");
 let ctx = canvas.getContext("2d");
 
-// function drawOrbit(radius) {
-//   ctx.strokeStyle = "#373737";
-//   ctx.beginPath();
-//   ctx.arc(320, 320, radius, 0, Math.PI*2, true);
-//   ctx.closePath();
-//   ctx.stroke();
-// }
+
+
+let stuff;
+
+// let jqNASA = $.ajax({
+//   url: "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=distinct%20pl_name&format=json",
+//
+//
+// }).done((result) => stuff = JSON.parse(result));
+//
+// console.log(jqNASA);
 
 // Classes -- SolarSystem class is a container class for StellarObject objects
 //  -- Star, Planet and Moon inherit from superclass StellarObject
 
 class SolarSystem {
-  // this.star = new Star();
-  // let planets = [];
 
   constructor(star, planets){
-
+    this.star = new Star();
+    this.planets = [];
   }
 }
 
 class StellarObject {
   constructor(x, y, r){
-    this.x = x;
-    this.y = y;
-    this.r = r;
+    // this.x = x;
+    // this.y = y;
+    // this.r = r;
   }
 }
 
 class Star extends StellarObject {
   constructor(){
     super();
+
+    // known parameters of an elliptic orbit found in the NASA database
+    this.ecc = 0.75;
+    this.semiMajor = Math.floor(Math.random() * 240);
+    this.semiMinor = Math.sqrt(Math.pow(this.semiMajor, 2) * (1 - Math.pow(this.ecc, 2)));
+
+    //foci
+    this.foci = Math.sqrt(Math.pow(this.semiMajor, 2) - Math.pow(this.semiMinor, 2));
   }
+
   draw(){
-    let g = ctx.createRadialGradient(320,320,4,320,320,32);
+    let g = ctx.createRadialGradient(320 - this.foci, 320, 4, 320 - this.foci, 320, 32);
     g.addColorStop(0, "#FFFF99");
     g.addColorStop(0.05, "#FFFF99")
     g.addColorStop(1, "#000000");
@@ -58,11 +70,24 @@ class Planet extends StellarObject {
   constructor(){
     super();
 
+    // known parameters of an elliptic orbit found in the NASA database
+    this.ecc = 0.75;
+    this.semiMajor = Math.floor(Math.random() * 480);
+    this.semiMinor = Math.sqrt(Math.pow(this.semiMajor, 2) * (1 - Math.pow(this.ecc, 2)));
+
+    //foci
+    this.foci = Math.sqrt(Math.pow(this.semiMajor, 2) - Math.pow(this.semiMinor, 2));
+
+    // Give the planet a random theta and velocity
     this.theta = Math.random() * 2 * Math.PI;
     this.dtheta = Math.random() / 25;
-    this.radius = Math.floor(Math.random() * 240) + 32;
+    // this.radius = Math.floor(Math.random() * 240) + 32;
 
-    this.x = (Math.cos(this.theta) * this.radius) + 320;
+    // calculate radius from a given (initially random) theta and some terrifying crazy ellipse math
+    this.radius = this.semiMajor * (1 - Math.pow(this.ecc, 2)) / (1 + (this.ecc * Math.cos(this.theta)))
+
+    //convert polar (theta, radius) to cartesian (x, y)
+    this.x = (Math.cos(this.theta) * this.radius) + 320 + this.foci;
     this.y = (Math.sin(this.theta) * this.radius) + 320;
 
     this.trailLength = 64;
@@ -71,7 +96,7 @@ class Planet extends StellarObject {
 
   draw(){
     this.update();
-    //this.drawOrbit(this.radius);
+    this.drawOrbit(this.radius);
     this.drawTrail();
 
     ctx.fillStyle = "white";
@@ -84,8 +109,7 @@ class Planet extends StellarObject {
   drawOrbit(r) {
     ctx.strokeStyle = "#3F3F3F";
     ctx.beginPath();
-    ctx.arc(320, 320, this.radius, 0, Math.PI*2, true);
-    ctx.closePath();
+    ctx.ellipse(320, 320, this.semiMajor, this.semiMinor, 0, 0, 2 * Math.PI, false)
     ctx.stroke();
   }
 
@@ -109,10 +133,14 @@ class Planet extends StellarObject {
     this.trailPositions.push({x: this.x, y: this.y});
     if (this.trailPositions.length > this.trailLength) this.trailPositions.shift();
 
-    this.x = (Math.cos(this.theta) * this.radius) + 320;
+    this.x = (Math.cos(this.theta) * this.radius) + 320 + this.foci;
     this.y = (Math.sin(this.theta) * this.radius) + 320;
 
     this.theta += this.dtheta;
+    // this.radius = this.semiMajor * (1 - Math.pow(this.ecc, 2)) / (1 + Math.cos(this.theta));
+    this.radius = this.semiMajor * (1 - Math.pow(this.ecc, 2)) / (1 + (this.ecc * Math.cos(this.theta)))
+
+    console.log(this.semiMajor);
   }
 }
 
