@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="us">
   <head>
     <meta charset="utf-8">
+    <title>Galvanize Q1 Project &#8226; Exoplanets &#8226; Visualization</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Galvanize Q1 Project &#8226; Exoplanets &#8226; About</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
     <link rel="stylesheet" href="css/exoplanets.css" />
-    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
   </head>
   <body>
     <header class="pure-g">
@@ -20,5 +20,13 @@
         </ul>
       </nav>
     </header>
+    <div class="canvas-wrapper pure-g">
+      <canvas id="canvas-visualizer" width="640" height="640">Your browser does not support HTML5 Canvas</canvas>
+    </div>
+    <footer class="pure-g">
+      <h4>Steven J Burns &#8226; Galvanize Boulder &#8226; WDI g62</h4>
+      <audio src="" autoplay>Your browser does not support the <code>audio</code> element.</audio>
+    </footer>
+    <script defer src="js/exoplanets.js"></script>
   </body>
 </html>

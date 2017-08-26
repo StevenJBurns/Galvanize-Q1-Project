@@ -5,30 +5,33 @@
 
 body {
   font-family: Futura;
-  background-color: #C7C7C7;
+  background-color: #373737;
 }
 
 header {
-  height: 48px;
+  color: #C7C7C7;
+  background-color: #3C3C3C;
 }
 
-nav {
-
-}
 
 #canvas-wrapper {
   margin: auto;
   text-align: center;
 }
 
-#canvasSystem {
+#canvas-starfield {
   margin: auto;
-  border-width: 4px;
-  border-style: solid;
-  border-color: darkblue;
+  width: 100%;
+  background-color: #0F0F0F;
+  display: block;
+}
+
+#canvas-visualizer {
+  margin: auto;
   display: block;
 }
 
 footer {
-
+  color: #A7A7A7;
+  background-color: #3C3C3C;
 }

@@ -1,7 +1,7 @@
 "use strict"
 
 // Find the canvas via the DOM and get a 2D context to it
-let canvas = document.getElementById("canvasSystem");
+let canvas = document.getElementById("canvas-visualizer");
 let ctx = canvas.getContext("2d");
 
 
@@ -39,6 +39,7 @@ class Star extends StellarObject {
   constructor(){
     super();
 
+    this.isBinary = false;
   }
 
   draw(){
@@ -52,6 +53,14 @@ class Star extends StellarObject {
     // ctx.arc(320, 320, 24, 0, Math.PI*2, true);
     // ctx.closePath();
     ctx.fillRect(0,0,640,640);
+  }
+
+  drawSingleStar(){
+
+  }
+
+  drawBinary(){
+
   }
 
   update(){
@@ -92,7 +101,7 @@ class Planet extends StellarObject {
     this.drawOrbit(this.radius);
     this.drawTrail();
 
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "#FFFFFF";
     ctx.beginPath();
     ctx.arc(this.x, this.y, 4, 0, Math.PI*2, true);
     ctx.closePath();

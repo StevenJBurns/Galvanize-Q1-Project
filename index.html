@@ -4,20 +4,31 @@
     <meta charset="utf-8">
     <title>Galvanize Q1 Project &#8226; Exoplanets &#8226; Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <title></title>
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
     <link rel="stylesheet" href="css/exoplanets.css" />
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <script src=""></script>
   </head>
   <body>
-    <header>
-      <h1>Exoplanet System Viewer</h1>
+    <header class="pure-g">
+      <h1 class="pure-u-1-2">Exoplanet System Viewer</h1>
+      <nav class="pure-menu pure-menu-horizontal pure-u-1-2">
+        <ul class="pure-menu-list">
+          <li class="pure-menu-item"><a class="pure-menu-link" href="index.html">Home</a></li>
+          <li class="pure-menu-item"><a class="pure-menu-link" href="data.html">Data</a></li>
+          <li class="pure-menu-item"><a class="pure-menu-link" href="visualization.html">Visualization</a></li>
+          <li class="pure-menu-item"><a class="pure-menu-link" href="about.html">About</a></li>
+        </ul>
+      </nav>
     </header>
-    <nav></nav>
-    <div class="canvas-wrapper pure-g">
-
+    <div class="canvas-wrapper">
+      <canvas id="canvas-starfield"></canvas>
     </div>
-    <canvas id="canvasSystem" width='640' height='640'></canvas>
-    <footer class="pure-g"></footer>
-    <script defer src="js/exoplanets.js"></script>
+    <footer class="">
+      <h4>Steven J Burns &#8226; Galvanize Boulder &#8226; WDI g62</h4>
+      <audio src="" autoplay>Your browser does not support the <code>audio</code> element.</audio>
+    </footer>
+    <script defer src="js/starfield.js"></script>
   </body>
 </html>
