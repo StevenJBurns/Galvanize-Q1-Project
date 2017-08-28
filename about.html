@@ -7,18 +7,39 @@
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
     <link rel="stylesheet" href="css/exoplanets.css" />
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/3d4ad21d36.js"></script>
   </head>
   <body>
-    <header class="pure-g">
-      <h1 class="pure-u-1-2">Exoplanet System Viewer</h1>
-      <nav class="pure-menu pure-menu-horizontal pure-u-1-2">
-        <ul class="pure-menu-list">
-          <li class="pure-menu-item"><a class="pure-menu-link" href="index.html">Home</a></li>
-          <li class="pure-menu-item"><a class="pure-menu-link" href="data.html">Data</a></li>
-          <li class="pure-menu-item"><a class="pure-menu-link" href="visualization.html">Visualization</a></li>
-          <li class="pure-menu-item"><a class="pure-menu-link" href="about.html">About</a></li>
-        </ul>
-      </nav>
-    </header>
+    <header></header>
+    <nav class="pure-menu pure-menu-horizontal">
+      <img class="pure-menu-heading" height="96" width="96" src="images/solarsystem.png" />
+      <h2 class="pure-menu-heading">Exoplanet System Viewer</h2>
+      <ul class="pure-menu-list">
+        <li class="pure-menu-item"><a class="pure-menu-link" href="index.html">Home</a></li>
+        <li class="pure-menu-item"><a class="pure-menu-link" href="data.html">Data</a></li>
+        <li class="pure-menu-item"><a class="pure-menu-link" href="visualization.html">Visualization</a></li>
+        <li class="pure-menu-item pure-menu-selected"><a class="pure-menu-link" href="about.html">About</a></li>
+      </ul>
+      <button type="button" name="button" class="button-success pure-button" onClick="toggleSound()"><i class="fa fa-volume-up" aria-hidden="true"></i></button>
+    </nav>
+    <main>
+      <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+      <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li>OpenGameArt.org</li>
+      </ul>
+    </main>
+    <footer>
+      <h4 class="pure-u-5-5">Steven J Burns &#8226; Galvanize Boulder &#8226; WDI g62</h4>
+      <audio autoplay loop id="audioBackground" src="audio/about.ogg">Your browser does not support the <code>audio</code> element.</audio>
+    </footer>
+    <script defer src="js/about.js"></script>
   </body>
 </html>
