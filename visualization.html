@@ -10,21 +10,22 @@
     <script src="https://use.fontawesome.com/3d4ad21d36.js"></script>
   </head>
   <body>
-    <header></header>
-    <nav class="pure-menu pure-menu-horizontal">
-      <img class="pure-menu-heading" height="96" width="96" src="images/solarsystem.png" />
-      <h2 class="pure-menu-heading">Exoplanet System Viewer</h2>
-      <ul class="pure-menu-list">
-        <li class="pure-menu-item"><a class="pure-menu-link" href="index.html">Home</a></li>
-        <li class="pure-menu-item"><a class="pure-menu-link" href="data.html">Data</a></li>
-        <li class="pure-menu-item pure-menu-selected"><a class="pure-menu-link" href="visualization.html">Visualization</a></li>
-        <li class="pure-menu-item"><a class="pure-menu-link" href="about.html">About</a></li>
-      </ul>
-      <button type="button" id="buttonAudio" name="button" class="pure-button" onClick="toggleSound()"><i class="fa fa-volume-up" aria-hidden="true"></i></button>
-    </nav>
+    <header>
+      <nav class="pure-menu pure-menu-horizontal">
+        <img class="pure-menu-heading" height="96" width="96" src="images/solarsystem.png" />
+        <h2 class="pure-menu-heading">Exoplanet System Viewer</h2>
+        <ul class="pure-menu-list">
+          <li class="pure-menu-item"><a class="pure-menu-link" href="index.html">Home</a></li>
+          <li class="pure-menu-item"><a class="pure-menu-link" href="data.html">Data</a></li>
+          <li class="pure-menu-item pure-menu-selected"><a class="pure-menu-link" href="visualization.html">Visualization</a></li>
+          <li class="pure-menu-item"><a class="pure-menu-link" href="about.html">About</a></li>
+        </ul>
+        <button type="button" id="buttonAudio" name="button" class="pure-button" onClick="toggleSound()"><i class="fa fa-volume-up" aria-hidden="true"></i></button>
+      </nav>
+    </header>
     <main>
-      <div class="canvas-wrapper pure-g">
-        <canvas id="canvas-visualizer" width="640" height="640">Your browser does not support HTML5 Canvas</canvas>
+      <div class="canvas-wrapper">
+        <canvas id="canvas-visualizer">Your browser does not support HTML5 Canvas</canvas>
       </div>
     </main>
     <footer class="pure-u-5-5">

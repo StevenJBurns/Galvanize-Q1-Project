@@ -35,14 +35,6 @@ function initAudio(){
 
 initAudio();
 
-// Find the canvas via the DOM and get a 2D context to it
-let canvas = document.getElementById("canvas-visualizer");
-let ctx = canvas.getContext("2d");
-
-
-
-let stuff;
-
 // let jqNASA = $.ajax({
 //   url: "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=distinct%20pl_name&format=json",
 //
@@ -53,6 +45,25 @@ let stuff;
 
 // Classes -- SolarSystem class is a container class for StellarObject objects
 //  -- Star, Planet and Moon inherit from superclass StellarObject
+
+
+
+// Find the canvas via the DOM and get a 2D context to it
+let divWrapper = document.getElementById("canvas-wrapper");
+let canvas = document.getElementById("canvas-visualizer");
+let ctx = canvas.getContext("2d");
+
+canvas.width = innerWidth;
+canvas.height = $(window).height() - ($("header").outerHeight() + $("footer").outerHeight());
+
+$(window).resize(resizeCanvas);
+
+function resizeCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = $(window).height() - ($("header").outerHeight() + $("footer").outerHeight());
+
+  init();
+}
 
 class SolarSystem {
 
@@ -78,16 +89,13 @@ class Star extends StellarObject {
   }
 
   draw(){
-    let g = ctx.createRadialGradient(320, 320, 4, 320, 320, 32);
+    let g = ctx.createRadialGradient(320, 320, 4, 320, 320, 28);
     g.addColorStop(0, "#FFFF99");
     g.addColorStop(0.05, "#FFFF99")
     g.addColorStop(1, "#000000");
 
     ctx.fillStyle = g;
-    // ctx.beginPath();
-    // ctx.arc(320, 320, 24, 0, Math.PI*2, true);
-    // ctx.closePath();
-    ctx.fillRect(0,0,640,640);
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   }
 
   drawSingleStar(){
@@ -108,7 +116,7 @@ class Planet extends StellarObject {
     super();
 
     // known parameters of an elliptic orbit found in the NASA database
-    this.ecc = 0.5;
+    this.ecc = (Math.random() * 0.75) + 0.25;
     this.semiMajor = Math.floor(Math.random() * 240);
     this.semiMinor = Math.sqrt(Math.pow(this.semiMajor, 2) * (1 - Math.pow(this.ecc, 2)));
 
@@ -117,7 +125,7 @@ class Planet extends StellarObject {
 
     // Give the planet a random theta and velocity
     this.theta = Math.random() * 2 * Math.PI;
-    this.dtheta = Math.random() / 20  ;
+    this.dtheta = Math.random() / 20;
     // this.radius = Math.floor(Math.random() * 240) + 32;
 
     // calculate radius from a given (initially random) theta and some terrifying crazy ellipse math
@@ -184,17 +192,57 @@ class Planet extends StellarObject {
   }
 }
 
-class Moon extends StellarObject {
+// class Moon extends StellarObject {
+//   constructor(){
+//     super();
+//   }
+//
+// }
+
+class BackgroundStarfield {
   constructor(){
-    super();
+    this.stars = [];
+
+    for (let i = 0; i < 256; i++){
+      let s = {"starTheta" : Math.random() * 2 * Math.PI,
+               "starRadius" : Math.random() * (canvas.width / 1.5) + 96,
+               "opacity" : Math.random() / 1.5};
+      this.stars.push(s);
+      }
+    }
+
+    draw(){
+      this.update();
+
+      for (let s of this.stars){
+        let x = Math.cos(s.starTheta) * s.starRadius + 320;
+        let y = Math.sin(s.starTheta) * s.starRadius + 320;
+
+        ctx.fillStyle = `rgba(255,255,255,${s.opacity})`;
+        ctx.beginPath();
+        ctx.arc(x, y, 1, 0, 2 * Math.PI, true);
+        ctx.closePath();
+        ctx.fill();
+      }
+    }
+
+    update(){
+      for (let s of this.stars){
+        s.starTheta -= 0.00075;
+      }
+    }
   }
 
-}
-
-// Test Star & Planet
+// Test Background, Star & Planet
+let bgStars = new BackgroundStarfield();
 let star = new Star();
 let p1 = new Planet();
 let p2 = new Planet();
+
+
+function init(){
+
+}
 
 // Animation of the Canvas element
 function animateCanvas(){
@@ -204,9 +252,12 @@ function animateCanvas(){
   ctx.fillRect(0,0,640,640);
 
   star.draw();
+  bgStars.draw();
   p1.draw();
   p2.draw();
 }
 
+// Initialize the canvas and accompanying objects
+init();
 // Start the canvas animation; recursively calls window.requestAnimationFrame()
 animateCanvas();
