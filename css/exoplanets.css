@@ -6,7 +6,7 @@
 html {
   height: 100%;
   background-color: #373737;
-  font-family: Futura;
+  font-family: Futura, Verdana;
 }
 
 body {
@@ -33,7 +33,10 @@ header {
 
 main {
   height: 100%;
-  display: table;
+  color: #C7C7C7;
+  background-color: #1D1D1D;
+  display: table-row;
+
 }
 
 .logo-img {
