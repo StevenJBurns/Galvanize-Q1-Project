@@ -53,7 +53,7 @@ let divWrapper = document.getElementById("canvas-wrapper");
 let canvas = document.getElementById("canvas-visualizer");
 let ctx = canvas.getContext("2d");
 
-canvas.width = innerWidth;
+canvas.width = window.innerWidth;
 canvas.height = $(window).height() - ($("header").outerHeight() + $("footer").outerHeight());
 
 $(window).resize(resizeCanvas);
