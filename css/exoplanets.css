@@ -27,8 +27,28 @@ header {
   color: #A7A7A7;
 }
 
-.pure-menu-selected .pure-menu-link, .pure-menu-selected .pure-menu-link:visited {
+.pure-menu-selected .pure-menu-link,
+.pure-menu-selected .pure-menu-link:visited {
   color: #e1ce00;
+}
+
+#divAudioButtonWrapper {
+  padding: 4px;
+  text-align: right;
+  display: inline-block;
+}
+
+#divAudioButtonWrapper button {
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.button-success {
+  background: #1CB841;
+}
+
+.button-warning {
+  background: #DF7514;
 }
 
 main {

@@ -12,6 +12,7 @@ if (localStorage.getItem("sound") === null) localStorage.setItem("sound", "on") 
 // Then save the audio state to localStorage as "on" or "off" to be used in initAudio()
 function toggleSound(){
   audioBackground.muted ? audioBackground.muted = false : audioBackground.muted = true;
+  $("#buttonAudio").toggleClass("button-success button-warning")
   audioBackground.muted ? localStorage.setItem("sound", "off") : localStorage.setItem("sound", "on");
 }
 
@@ -19,9 +20,13 @@ function initAudio(){
   switch (localStorage.getItem("sound")) {
     case "on":
       audioBackground.muted = false;
+      $("#buttonAudio").addClass("button-success");
+      $("#buttonAudio").removeClass("button-warning");
       break;
     case "off":
       audioBackground.muted = true;
+      $("#buttonAudio").addClass("button-warning");
+      $("#buttonAudio").removeClass("button-success");
       break;
     default:
       audioBackground.muted = true;

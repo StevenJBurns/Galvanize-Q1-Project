@@ -20,7 +20,7 @@
         <li class="pure-menu-item"><a class="pure-menu-link" href="visualization.html">Visualization</a></li>
         <li class="pure-menu-item"><a class="pure-menu-link" href="about.html">About</a></li>
       </ul>
-      <button type="button" name="button" class="button-success pure-button" onClick="toggleSound()"><i class="fa fa-volume-up" aria-hidden="true"></i></button>
+      <button type="button" id="buttonAudio" name="button" class="pure-button" onClick="toggleSound()"><i class="fa fa-volume-up" aria-hidden="true"></i></button>
     </nav>
     <main>
       <img class="logo-img" src="images/icon_nasa.png" />
@@ -37,7 +37,7 @@
     </main>
     <footer>
       <h4 class="pure-u-5-5">Steven J Burns &#8226; Galvanize Boulder &#8226; WDI g62</h4>
-      <audio autoplay loop id="audioBackground" src="audio/index.ogg" onClick="toggleSound()">Your browser does not support the <code>audio</code> element.</audio>
+      <audio autoplay loop id="audioBackground" src="audio/data.ogg" onClick="toggleSound()">Your browser does not support the <code>audio</code> element.</audio>
     </footer>
     <script defer src="js/data.js"></script>
   </body>
