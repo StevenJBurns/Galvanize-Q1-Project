@@ -158,13 +158,6 @@ class Planet extends StellarObject {
   }
 }
 
-// class Moon extends StellarObject {
-//   constructor(){
-//     super();
-//   }
-//
-// }
-
 class BackgroundStarfield {
   constructor(){
     this.stars = [];

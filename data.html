@@ -10,29 +10,58 @@
     <script src="https://use.fontawesome.com/3d4ad21d36.js"></script>
   </head>
   <body>
-    <header></header>
-    <nav class="pure-menu pure-menu-horizontal">
-      <img class="pure-menu-heading logo-img" height="96" width="96" src="images/solarsystem.png" />
-      <h2 class="pure-menu-heading">Exoplanet System Viewer</h2>
-      <ul class="pure-menu-list">
-        <li class="pure-menu-item"><a class="pure-menu-link" href="index.html">Home</a></li>
-        <li class="pure-menu-item pure-menu-selected"><a class="pure-menu-link" href="data.html">Data</a></li>
-        <li class="pure-menu-item"><a class="pure-menu-link" href="visualization.html">Visualization</a></li>
-        <li class="pure-menu-item"><a class="pure-menu-link" href="about.html">About</a></li>
-      </ul>
-      <button type="button" id="buttonAudio" name="button" class="pure-button" onClick="toggleSound()"><i class="fa fa-volume-up" aria-hidden="true"></i></button>
-    </nav>
-    <main>
-      <img class="logo-img" src="images/icon_nasa.png" />
-      <img class="logo-img" src="images/icon_ipac.png" />
-      <img class="logo-img" src="images/icon_caltech.png" />
-      <section>
+    <header>
+      <nav class="pure-menu pure-menu-horizontal">
+        <img class="pure-menu-heading pure-img" height="96" width="96" src="images/solarsystem.png" />
+        <h2 class="pure-menu-heading">Exoplanet System Viewer</h2>
+        <ul class="pure-menu-list">
+          <li class="pure-menu-item"><a class="pure-menu-link" href="index.html">Home</a></li>
+          <li class="pure-menu-item pure-menu-selected"><a class="pure-menu-link" href="data.html">Data</a></li>
+          <li class="pure-menu-item"><a class="pure-menu-link" href="visualization.html">Visualization</a></li>
+          <li class="pure-menu-item"><a class="pure-menu-link" href="about.html">About</a></li>
+        </ul>
+        <button type="button" id="buttonAudio" name="button" class="pure-button" onClick="toggleSound()"><i class="fa fa-volume-up" aria-hidden="true"></i></button>
+      </nav>
+    </header>
+    <main class="pure-g">
+      <section id="sectionGeneral" class="pure-u-3-5">
+        <h3>The Data</h3>
         <article class="">
-
+          <h4>General</h4>
+          <p>The extrasolar data in this project comes directly from NASA and IPAC at Caltech.  Since 1992, over 3,500 extrasolar planets have been observed through various scientific means (but only less than two dozen have been <a href="https://en.wikipedia.org/wiki/List_of_directly_imaged_exoplanets">directly imaged</a>).</p>
         </article>
         <article class="">
-
+          <h4>Filtering For Usability</h4>
+          <p>Some exoplanet data is incomplete, as is the stellar data of their host stars. The aim of this simple web site is to visually plot and animate a rough estimation of the geometry and scale of these distant star systems. Without some of the variables, a section of stars and planets can not be plotted and therefore are not included in the snapshot of data used here.</p>
         </article>
+        <article class="">
+          <h4>Flattened SQL Data</h4>
+          <p>The available SQL data appears to come from a table view that combines star and planet data together.  While this allows for compact and less-effort storage, the hierarchical or relationship of planets to stars is lost.  Those relationships are rebuilt in the JavaScript code-behind files of these web pages.</p>
+        </article>
+        <img class="pure-img" src="images/icon_nasa.png" />
+        <img class="pure-img" src="images/icon_ipac.png" />
+        <img class="pure-img" src="images/icon_caltech.png" />
+      </section>
+      <section id="sectionData" class="pure-u-2-5">
+        <table style="margin: 0px auto;" class="pure-table pure-table-horizontal">
+          <thead>
+            <tr>
+              <th>Core Planet Statistics</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Total Stars</td>
+              <td id="tdStarCount"></td>
+            </tr>
+            <tr>
+              <td>Total Planets</td>
+              <td id="tdPlanetCount"></td>
+            </tr>
+          </tbody>
+        </table>
+        <p id="pData"></p>
       </section>
     </main>
     <footer>
