@@ -9,7 +9,7 @@ let planetsUsable;
 let systemSizes = [];
 
 // Total distinct star count in the SQL data
-let urlDistinctStars = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=distinct%20pl_hostname,pl_pnum&order=pl_hostname&format=json";
+let urlDistinctStars = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=distinct%20pl_hostname,pl_pnum,pl_cbflag&order=pl_pnum&format=json";
 
 // Total exoplanets count in the SQL data
 let urlDistinctPlanets = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=pl_hostname&format=json";
@@ -40,6 +40,19 @@ function initAJAX() {
 
 function initDataStars() {
   $("#tdStarCount").text(distinctStars.length);
+
+  let starsSingle = 0;
+  let starsBinary = 0;
+  for (let star of distinctStars) {
+    console.log(star['pl_cbflag']);
+    star['pl_cbflag'] === 0 ? starsSingle++ : starsBinary++
+  }
+
+  let $trSingle = `<tr><td>Single-Star Systems</td><td>${starsSingle}</td></tr>`;
+  let $trBinary = `<tr><td>Binary-Trinary Systems</td><td>${starsBinary}</td></tr>`
+
+  $("#tbodyCircumbinaryCounts").append($trSingle);
+  $("#tbodyCircumbinaryCounts").append($trBinary);
 }
 
 function initDataPlanets() {
@@ -53,17 +66,19 @@ function initDataPlanets() {
       if (!systemSizes.includes(i.pl_pnum)) systemSizes.push(i.pl_pnum)
     }
 
+    systemSizes.sort();
+
     for (let size of systemSizes) {
       for (let pnum of distinctStars) {
-        console.log(pnum);
         (!objSizeCounters[size]) ? objSizeCounters[size] = 1 : objSizeCounters[pnum["pl_pnum"]]++
         }
-      let $tr = `<tr><td>Systems Containing ${size} Planets</td><td>${objSizeCounters[size]}</td></tr>`;
-      $("#tbodyPlanetCounts").append($tr);
-      }
 
-    //planetsUsable = $.getJSON(urlUsablePlanets, (data) => data.forEach((planet) => $("#tdPlanetCount").text(data.length)));
+      let $tr = `<tr><td>Systems Containing ${size} Planets</td><td>${objSizeCounters[size] - 1}</td></tr>`;
+      $("#tbodyPlanetCounts").append($tr);
+    }
   });
+
+
 }
 
 initAJAX();
