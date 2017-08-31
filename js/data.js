@@ -53,28 +53,17 @@ function initDataPlanets() {
       if (!systemSizes.includes(i.pl_pnum)) systemSizes.push(i.pl_pnum)
     }
 
-    console.log(distinctStars);
-
     for (let size of systemSizes) {
-      for (let star of distinctStars) {
-        if (objSizeCounters[size]) {
-          objSizeCounters[size++];
-        } else {
-          objSizeCounters[size] = 1;
+      for (let pnum of distinctStars) {
+        console.log(pnum);
+        (!objSizeCounters[size]) ? objSizeCounters[size] = 1 : objSizeCounters[pnum["pl_pnum"]]++
         }
-        console.log(objSizeCounters[size]);
-      }
-
       let $tr = `<tr><td>Systems Containing ${size} Planets</td><td>${objSizeCounters[size]}</td></tr>`;
       $("#tbodyPlanetCounts").append($tr);
-    }
+      }
+
+    //planetsUsable = $.getJSON(urlUsablePlanets, (data) => data.forEach((planet) => $("#tdPlanetCount").text(data.length)));
   });
-
-  //planetsUsable = $.getJSON(urlUsablePlanets, (data) => data.forEach((planet) => $("#tdPlanetCount").text(data.length)));
-
-  for (let size of systemSizes) {
-
-  }
 }
 
 initAJAX();
