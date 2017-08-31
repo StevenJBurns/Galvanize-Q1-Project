@@ -28,6 +28,9 @@ function resizeCanvas(){
   init();
 }
 
+let ken = new Image();
+ken.src = "images/ken.png";
+
 
 // Classes -- SolarSystem class is a container class for StellarObject objects
 //  -- Star, Planet and Moon inherit from superclass StellarObject
@@ -109,6 +112,8 @@ class Planet extends StellarObject {
     this.update();
     this.drawOrbit(this.radius);
     this.drawTrail();
+
+    // ctx.drawImage(ken, this.x, this.y, 32, 32)
 
     ctx.fillStyle = "#FFFFFF";
     ctx.beginPath();

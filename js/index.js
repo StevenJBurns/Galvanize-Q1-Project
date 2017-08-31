@@ -2,6 +2,9 @@
 
 initAudio();
 
+let ken = new Image();
+ken.src = "images/ken.png";
+
 let divWrapper = document.getElementById("canvas-wrapper");
 let canvas = document.getElementById("canvas-starfield");
 let ctx = canvas.getContext("2d");
@@ -37,6 +40,8 @@ class Star {
 
   draw(){
     this.update();
+
+    // ctx.drawImage(ken, this.x, this.y, 32, 32)
 
     ctx.fillStyle = `rgba(255,255,255,${this.opacity})`;
     ctx.beginPath();
