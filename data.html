@@ -18,7 +18,7 @@
           <li class="pure-menu-item"><a class="pure-menu-link" href="index.html">Home</a></li>
           <li class="pure-menu-item pure-menu-selected"><a class="pure-menu-link" href="data.html">Data</a></li>
           <li class="pure-menu-item"><a class="pure-menu-link" href="visualization.html">Visualization</a></li>
-          <li class="pure-menu-item"><a class="pure-menu-link" href="about.html">About</a></li>
+          <!-- <li class="pure-menu-item"><a class="pure-menu-link" href="about.html">About</a></li> -->
         </ul>
         <button type="button" id="buttonAudio" name="button" class="pure-button" onClick="toggleSound()"><i class="fa fa-volume-up" aria-hidden="true"></i></button>
       </nav>
@@ -43,21 +43,23 @@
         <img class="pure-img" src="images/icon_caltech.png" />
       </section>
       <section id="sectionData" class="pure-u-2-5">
+        <h3 style="text-align: center;">Last API Data Update: </h3>
+        <!-- HTML Tables are the tool of the Devil, but these look nice and actually work here -->
         <table style="margin: 32px auto;" class="pure-table pure-table-horizontal">
           <thead>
             <tr>
-              <th>Core Planet Statistics</th>
+              <th>Raw Statistics</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>Total Stars</td>
-              <td id="tdStarCount"></td>
+              <td id="tdStarCountRaw"></td>
             </tr>
             <tr>
               <td>Total Planets</td>
-              <td id="tdPlanetCount"></td>
+              <td id="tdPlanetCountRaw"></td>
             </tr>
           </tbody>
         </table>
@@ -81,8 +83,33 @@
           <tbody id="tbodyPlanetCounts">
           </tbody>
         </table>
-        <p id="pData"></p>
       </section>
+      <section class="pure-u-5-5" style="text-align: center">
+        <hr>
+        <h4 id="h4RemovingStars" style="margin: 16px;">Removing stars that do not have data for Mass or Radius</h4>
+        <i class="fa fa-arrow-circle-o-down fa-3x"></i>
+        <hr>
+    </section>
+    <section class="pure-g">
+      <table style="margin: 32px auto;" class="pure-table pure-table-horizontal pure-u-5-5">
+        <thead>
+          <tr>
+            <th>Modified Statistics</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Modified Star Count</td>
+            <td id="tdStarCountModified"></td>
+          </tr>
+          <tr>
+            <td>Modified Planets Count</td>
+            <td id="tdPlanetCountModified"></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
     </main>
     <footer>
       <h4 class="pure-u-5-5">Steven J Burns &#8226; Galvanize Boulder &#8226; WDI g62</h4>

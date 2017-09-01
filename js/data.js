@@ -1,7 +1,6 @@
 "use strict"
 
-initAudio();
-
+// Global Page Variables
 let appData;
 let distinctStars;
 let distinctPlanets;
@@ -23,28 +22,23 @@ let urlSystemPlanetCounts = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/n
 let urlUsablePlanets = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=pl_cbflag,pl_hostname,pl_letter,pl_orbsmax,pl_orbeccen&where=pl_orbsmax%20is%20not%20%20null%20and%20pl_orbeccen%20is%20not%20null&order=pl_hostname,pl_letter&format=json";
 // Total usable "solo" and binary star systems
 
-
+// Starting point to coalesce the data into usable, hierarchical objects -- the asynchronous AJAX calls need to be "timed"
+// Also contains a function to check last AJAX calls, localStorage cache of the data to avoid hammering the NASA API server
 function initAJAX() {
   distinctStars = $.getJSON(urlDistinctStars);
   distinctStars.done((data) => {
     distinctStars = data;
     initDataStars();
   });
-
-  distinctPlanets = $.getJSON(urlDistinctPlanets);
-  distinctPlanets.done((data) => {
-    distinctPlanets = data;
-    initDataPlanets()
-  })
 }
 
+// After collecting all star data, start filtering it
 function initDataStars() {
-  $("#tdStarCount").text(distinctStars.length);
+  $("#tdStarCountRaw").text(distinctStars.length);
 
   let starsSingle = 0;
   let starsBinary = 0;
   for (let star of distinctStars) {
-    console.log(star['pl_cbflag']);
     star['pl_cbflag'] === 0 ? starsSingle++ : starsBinary++
   }
 
@@ -53,10 +47,6 @@ function initDataStars() {
 
   $("#tbodyCircumbinaryCounts").append($trSingle);
   $("#tbodyCircumbinaryCounts").append($trBinary);
-}
-
-function initDataPlanets() {
-  $("#tdPlanetCount").text(distinctPlanets.length);
 
   let sizes = $.getJSON(urlSystemPlanetCounts);
   sizes.done((data) => {
@@ -66,8 +56,11 @@ function initDataPlanets() {
       if (!systemSizes.includes(i.pl_pnum)) systemSizes.push(i.pl_pnum)
     }
 
+    // Sort the "sizes" array so the table shows the planet counts in order
     systemSizes.sort();
 
+    // Count the # of planets per solar system and group them by adding a property to the star objects
+    // Also inject a table row with that data into the table on the data page
     for (let size of systemSizes) {
       for (let pnum of distinctStars) {
         (!objSizeCounters[size]) ? objSizeCounters[size] = 1 : objSizeCounters[pnum["pl_pnum"]]++
@@ -77,6 +70,61 @@ function initDataPlanets() {
       $("#tbodyPlanetCounts").append($tr);
     }
   });
+
+  distinctPlanets = $.getJSON(urlDistinctPlanets);
+  distinctPlanets.done((data) => {
+    distinctPlanets = data;
+    initDataPlanets()
+  });
 }
 
+// After collecting and filtering star data, filter and push planet data to its respective parent star object
+function initDataPlanets() {
+  $("#tdPlanetCountRaw").text(distinctPlanets.length);
+
+  // All initial raw star data is now presented on the page.
+  // Now we slice and dice the distinctStars variable to filter out unusable data
+  let removedStars = [];
+  for (let star of distinctStars) {
+    if (!star["st_mass"]) {
+      let index = distinctStars.indexOf(star);
+
+      if (index > -1) removedStars.push(distinctStars.splice(index, 1)[0]);
+    }
+  }
+
+  for (let star of distinctStars) {
+    if (!star["st_rad"]) {
+      let index = distinctStars.indexOf(star);
+
+      if (index > -1) removedStars.push(distinctStars.splice(index, 1)[0]);
+    }
+  }
+
+  console.log(distinctStars);
+
+  $("#h4RemovingStars").text(`Removing ${removedStars.length} stars that do not have data for Mass or Radius`);
+  $("#tdStarCountModified").text(distinctStars.length);
+
+  let removedPlanets = [];
+  // console.log(removedStars);
+  for (let planet of distinctPlanets) {
+    if (!removedStars.includes(planet)) {
+      let index = distinctPlanets.indexOf(planet);
+
+      if (index > -1) removedPlanets.push(distinctPlanets.splice(index, 1));
+    }
+  }
+  $("#tdPlanetCountModified").text(removedPlanets.length);
+
+  console.log(distinctStars);
+
+  for (let star of distinctStars) {
+    for (let planet of distinctPlanets) {
+    }
+  }
+}
+
+initAudio();
+//initData();
 initAJAX();

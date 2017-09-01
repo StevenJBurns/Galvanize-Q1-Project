@@ -5,9 +5,9 @@ let audioBackground = document.getElementById("audioBackground");
 
 // check if local storage contains a key for "sound" status to handle global muting/unmuting
 // On the first-time creation, set it to "on" to annoy first time visitors
-if (localStorage.getItem("sound") === null) localStorage.setItem("sound", "on") // : localStorage.setItem("sound", "off")
+if (localStorage.getItem("sound") === null) localStorage.setItem("sound", "on");
 
-// Simple -- Flip the Boolean value of "muted" on the Audio element on button click
+// Simple -- Flip the Boolean value of "muted" on the Audio element on button click.
 // Eventhandler is attached to the button as onClick attribute in the Audio element
 // Then save the audio state to localStorage as "on" or "off" to be used in initAudio()
 function toggleSound(){

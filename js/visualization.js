@@ -33,7 +33,7 @@ ken.src = "images/ken.png";
 
 
 // Classes -- SolarSystem class is a container class for StellarObject objects
-//  -- Star, Planet and Moon inherit from superclass StellarObject
+//  -- Star and Planet inherit from superclass StellarObject <-- REMOVED
 class SolarSystem {
 
   constructor(star, planets){
@@ -42,19 +42,12 @@ class SolarSystem {
   }
 }
 
-class StellarObject {
-  constructor(x, y, r){
-    // this.x = x;
-    // this.y = y;
-    // this.r = r;
-  }
-}
-
-class Star extends StellarObject {
+class Star {
   constructor(){
-    super();
-
+    this.mass;
+    this.radius;
     this.isBinary = false;
+    this.planets = [];
   }
 
   draw(){
@@ -80,10 +73,8 @@ class Star extends StellarObject {
   }
 }
 
-class Planet extends StellarObject {
+class Planet {
   constructor(){
-    super();
-
     // known parameters of an elliptic orbit found in the NASA database
     this.ecc = (Math.random() * 0.75) + 0.25;
     this.semiMajor = Math.floor(Math.random() * 240);

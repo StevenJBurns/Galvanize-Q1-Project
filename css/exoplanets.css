@@ -94,6 +94,10 @@ p {
   color: #DF7514;
 }
 
+hr {
+  margin: 16px;
+}
+
 footer {
   height: 1px;
   width: 100%;

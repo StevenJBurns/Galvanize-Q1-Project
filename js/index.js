@@ -25,7 +25,7 @@ function resizeCanvas(){
 function init(){
   stars = [];
 
-  for (let i = 0; i < 767; i++){
+  for (let i = 0; i < 512; i++){
     let s = new Star(Math.floor(Math.random() * ctx.canvas.width), Math.floor(Math.random() * ctx.canvas.height));
     stars.push(s);
   }
