@@ -9,7 +9,7 @@ let planetsUsable;
 let systemSizes = [];
 
 // Total distinct star count in the SQL data
-let urlDistinctStars = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=distinct%20pl_hostname,pl_pnum,pl_cbflag&order=pl_pnum&format=json";
+let urlDistinctStars = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=distinct%20pl_hostname,pl_pnum,pl_cbflag,st_mass,st_rad&order=pl_hostname&format=json";
 
 // Total exoplanets count in the SQL data
 let urlDistinctPlanets = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=pl_hostname&format=json";

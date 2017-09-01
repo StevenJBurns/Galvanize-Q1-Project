@@ -86,8 +86,12 @@ p {
   margin: 16px;
 }
 
-a, a:visited {
-  /*color: #e1ce00;*/
+.link {
+  color: #e1ce00;
+}
+
+.link:visited {
+  color: #DF7514;
 }
 
 footer {
