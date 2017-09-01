@@ -77,8 +77,6 @@ function initDataPlanets() {
       $("#tbodyPlanetCounts").append($tr);
     }
   });
-
-
 }
 
 initAJAX();
