@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 let timeAPI;
 let nextAPI;
@@ -8,11 +8,27 @@ let timeNow = new Date();
 // if no, set it to NOW; If yes, update it to stored time
 localStorage["lastCallToAPI"] === null ? timeAPI = Date.parse(localStorage.getItem("timeAPI")) : localStorage.setItem("lastCallToAPI", timeNow.toString())
 
+
+// Global Variables --------------------------------------------------------------------------- Start
+let appData;
+
+let distinctStars;
+let distinctPlanets;
+
+let usableStar;
+let usablePlanets;
+
+let systemSizes = [];
+
+
 // Total distinct star count in the SQL data
 //let urlDistinctStars = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=distinct%20pl_hostname,pl_pnum,pl_cbflag,st_mass,st_rad&order=pl_hostname&format=json";
 
 // Total exoplanets count in the SQL data
 //let urlDistinctPlanets = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=pl_hostname&format=json";
+// Global Variables --------------------------------------------------------------------------- End
+
+
 
 // Total binary extrasolar systems
 

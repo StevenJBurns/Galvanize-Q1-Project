@@ -1,14 +1,14 @@
-"use strict"
+"use strict";
 
 initAudio();
 
-// let jqNASA = $.ajax({
-//   url: "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=distinct%20pl_name&format=json",
-//
-//
-// }).done((result) => stuff = JSON.parse(result));
-//
-// console.log(jqNASA);
+let urlSystemsUsable = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=pl_cbflag,pl_hostname,pl_letter,st_mass,st_rad,pl_orbsmax,pl_orbeccen&where=pl_orbsmax%20is%20not%20%20null%20and%20pl_orbeccen%20is%20not%20null%20and%20st_mass%20is%20not%20null%20and%20st_rad%20is%20not%20null&order=pl_hostname,pl_letter&format=json";
+
+let systemsUsable = $.getJSON(urlSystemsUsable);
+systemsUsable.done((data) => {
+  systemsUsable = data;
+  init();
+});
 
 
 // Find the canvas via the DOM and get a 2D context to it
@@ -196,7 +196,7 @@ let p2 = new Planet();
 
 
 function init(){
-
+  animateCanvas();
 }
 
 // Animation of the Canvas element
@@ -213,6 +213,5 @@ function animateCanvas(){
 }
 
 // Initialize the canvas and accompanying objects
-init();
+//init();
 // Start the canvas animation; recursively calls window.requestAnimationFrame()
-animateCanvas();

@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 let canvasBigBang = document.getElementById("canvasBigBang");
 let ctx = canvasBigBang.getContext("2D");

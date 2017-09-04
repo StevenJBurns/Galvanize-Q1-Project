@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 // Get the audio element that plays the background space ambience file
 let audioBackground = document.getElementById("audioBackground");
