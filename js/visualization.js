@@ -5,7 +5,7 @@ let divWrapper = document.getElementById("canvas-wrapper");
 let canvas = document.getElementById("canvas-visualizer");
 let ctx;
 
-let runCanvasAnimation
+let runCanvasAnimation;
 let currentSolarSystem;
 
 canvas.width = $(window).width() - $("#visualization-sidepanel").innerWidth();
@@ -187,12 +187,11 @@ function resizeCanvas(){
 
 function handleSelectSolarSystem() {
   runCanvasAnimation = false;
+  currentSolarSystem = null;
 
-  currentSolarSystem = dataNormalized.filter((system) => {return system.systemName == this.value});
+  //currentSolarSystem = dataNormalized.filter((system) => {return system.systemName == this.value});
 
   $("#h4-SelectedSolarSystem").text(`Selected System : ${this.value}`);
-
-  initAnimation();
 }
 
 function initAnimation() {
@@ -210,6 +209,9 @@ function initAnimation() {
 
 // Animation of the Canvas element
 function animateCanvas() {
+  ctx.fillStyle = "black";
+  ctx.fillRect(0,0,ctx.canvas.height,ctx.canvas.width);
+
   if (!runCanvasAnimation) {
     // ctx.fillStyle = "black";
     // ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);
@@ -218,20 +220,18 @@ function animateCanvas() {
     star = null;
     p1 = null;
     p2 = null;
+    initAnimation();
     return;
   }
 
-  window.requestAnimationFrame(animateCanvas);
-
-  ctx.fillStyle = "black";
-  ctx.fillRect(0,0,ctx.canvas.height,ctx.canvas.width);
+  requestAnimationFrame(animateCanvas);
 
   star.draw();
   p1.draw();
   p2.draw();
   bgStars.draw();
-
 }
+
 // Test Background, Star & Planets
 let bgStars;
 let star;
