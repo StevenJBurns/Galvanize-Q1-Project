@@ -181,17 +181,23 @@ function updatePageElements() {
 function resizeCanvas(){
   canvas.width = $(window).width() - $("#visualization-sidepanel").innerWidth();
   canvas.height = $(window).height() - ($("header").outerHeight() + $("footer").outerHeight());
-
-  //initAnimation();
 }
 
 function handleSelectSolarSystem() {
+  // Stop the canvas animation and get ready to draw a new solar system
   runCanvasAnimation = false;
-  currentSolarSystem = null;
+  currentSolarSystem = dataNormalized.find((system) => {return system.systemName == this.value});
 
-  //currentSolarSystem = dataNormalized.filter((system) => {return system.systemName == this.value});
+  $("#h4-SelectedSystemName").text(`Selected System : ${currentSolarSystem["systemName"]}`);
+  $("#h5-SelectedSystemDistance").text(`Distance from Earth : ${currentSolarSystem["distanceToEarth"]} parsecs`);
+  $("#h5-SelectedSystemBinary").text(`Multi-Star System : ${!!+currentSolarSystem["star"].isMultiStar}`); // the !!+ is a nifty trick to turn 0/1 to true/false;
+  $("#h5-SelectedSystemCount").text(`Planet Count : ${currentSolarSystem["planetCount"]}`);
 
-  $("#h4-SelectedSolarSystem").text(`Selected System : ${this.value}`);
+  $("#ul-PlanetList").empty();
+  for (let planet of currentSolarSystem["planets"]) {
+    let newPlanet = `<li>${planet["name"]}</li>`;
+    $("#ul-PlanetList").append(newPlanet);
+  }
 }
 
 function initAnimation() {
@@ -213,8 +219,6 @@ function animateCanvas() {
   ctx.fillRect(0,0,ctx.canvas.height,ctx.canvas.width);
 
   if (!runCanvasAnimation) {
-    // ctx.fillStyle = "black";
-    // ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);
     ctx = null;
     bgStars = null;
     star = null;
