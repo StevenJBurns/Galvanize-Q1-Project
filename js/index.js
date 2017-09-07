@@ -2,8 +2,8 @@
 
 initAudio();
 
-let ken = new Image();
-ken.src = "images/ken.png";
+// let ken = new Image();
+// ken.src = "images/ken.png";
 
 let divWrapper = document.getElementById("canvas-wrapper");
 let canvas = document.getElementById("canvas-starfield");
@@ -41,13 +41,13 @@ class Star {
   draw(){
     this.update();
 
-    // ctx.drawImage(ken, this.x, this.y, 32, 32)
-
     ctx.fillStyle = `rgba(255,255,255,${this.opacity})`;
     ctx.beginPath();
-    ctx.arc(this.x, this.y, 1, 0, Math.PI*2, true);
+    ctx.arc(this.x, this.y, 1, 0, Math.PI * 2, true);
     ctx.closePath();
     ctx.fill();
+
+    // ctx.drawImage(ken, this.x, this.y, 32, 32)
   }
 
   update(){

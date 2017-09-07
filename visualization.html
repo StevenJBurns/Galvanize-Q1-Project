@@ -23,18 +23,23 @@
         <button type="button" id="buttonAudio" name="button" class="pure-button" onClick="toggleSound()"><i class="fa fa-volume-up" aria-hidden="true"></i></button>
       </nav>
     </header>
-    <main>
+    <main id="" style="padding: 0;">
       <div class="canvas-wrapper">
         <canvas id="canvas-visualizer">Your browser does not support HTML5 Canvas</canvas>
       </div>
+      <section id="visualization-sidepanel">
+        <input id="rangeSystemSizes" type="range" name="points" min="1" max="7" />
+        <select id="selectSolarSystem" size="16"></select>
+        <hr />
+        <h4 id="h4-SelectedSolarSystem">Selected System : </h4>
+      </section>
     </main>
-    <section class="pure-g"></section>
     <footer>
       <h4 class="pure-u-5-5">Steven J Burns &#8226; Galvanize Boulder &#8226; WDI g62</h4>
       <audio autoplay loop id="audioBackground" src="audio/visualization.ogg">Your browser does not support the <code>audio</code> element.</audio>
     </footer>
     <script defer src="js/initAudio.js"></script>
-    <!-- <script defer src="js/initData.js"></script> -->
+    <script defer src="js/initData.js"></script>
     <script defer src="js/visualization.js"></script>
   </body>
 </html>

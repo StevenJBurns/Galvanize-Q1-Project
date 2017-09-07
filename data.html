@@ -23,100 +23,89 @@
         <button type="button" id="buttonAudio" name="button" class="pure-button" onClick="toggleSound()"><i class="fa fa-volume-up" aria-hidden="true"></i></button>
       </nav>
     </header>
-    <main class="pure-g">
-      <section id="sectionGeneral" class="pure-u-3-5">
-        <h3>The Data</h3>
-        <article class="">
+    <main>
+      <h3 style="padding: 12px; text-align: center">The Data</h3>
+      <section class="pure-g">
+        <article class="pure-u-11-24">
           <h4>General</h4>
-          <p>The extrasolar data in this project comes directly from NASA and IPAC at Caltech.  Since 1992, over 3,500 extrasolar planets have been observed through various scientific means (but only less than two dozen have been <a class="link" href="https://en.wikipedia.org/wiki/List_of_directly_imaged_exoplanets">directly imaged</a>).  A majority of the data comes from the <a class="link" href="https://en.wikipedia.org/wiki/Kepler_(spacecraft)">Kepler and K2</a> missions since the Kepler Space Observatory was launched in 2009. NASA maintains a list of over 3,000 potential stellar candidates for future observations.  </p>
+          <p>The extrasolar data in this project comes directly from NASA and IPAC at Caltech.  Since 1992, over 3,500 <a class="link" href="https://en.wikipedia.org/wiki/Exoplanet">extrasolar planets</a> have been observed through various means (but less than two dozen have been <a class="link" href="https://en.wikipedia.org/wiki/List_of_directly_imaged_exoplanets">directly imaged</a>).</p>
+          <p>A majority of the data comes from the <a class="link" href="https://en.wikipedia.org/wiki/Kepler_(spacecraft)">Kepler and K2</a> missions since the Kepler Space Observatory was launched in 2009. NASA maintains a list of over 5,000 potential stellar candidates for future observations.</p>
+          <p>Scientists estimate there are roughly 100 billion exoplanets in our galaxy alone. Further extrapolation predicts there are 10 billion earth size planets and of those 1 billion may be in its host star's <a class="link" href="https://en.wikipedia.org/wiki/Circumstellar_habitable_zone">habitable zone</a></p>
         </article>
-        <article class="">
-          <h4>Filtering For Usability</h4>
+        <div class="pure-u-2-24"></div>
+
+          <!-- <img class="pure-img" src="images/icon_nasa.png" />
+          <img class="pure-img" src="images/icon_ipac.png" />
+          <img class="pure-img" src="images/icon_caltech.png" /> -->
+
+        <article class="pure-u-11-24">
+          <h4>Filtered And Normalized For Usability</h4>
+          <p>The available SQL data appears to come from a table view that combines star and planet data together.  While this allows for compact and less-effort storage, the hierarchical or relationship of planets to stars is lost.  Those relationships are rebuilt in the JavaScript code-behind files of these web pages.</p>
           <p>Some exoplanet data is incomplete, as is the stellar data of their host stars. The aim of this simple web site is to visually plot and animate a rough estimation of the geometry and scale of these distant star systems. Without some of the variables, a section of stars and planets can not be plotted and therefore are not included in the snapshot of data used here.</p>
         </article>
-        <article class="">
-          <h4>Flattened SQL Data</h4>
-          <p>The available SQL data appears to come from a table view that combines star and planet data together.  While this allows for compact and less-effort storage, the hierarchical or relationship of planets to stars is lost.  Those relationships are rebuilt in the JavaScript code-behind files of these web pages.</p>
-        </article>
-        <img class="pure-img" src="images/icon_nasa.png" />
-        <img class="pure-img" src="images/icon_ipac.png" />
-        <img class="pure-img" src="images/icon_caltech.png" />
       </section>
-      <section id="sectionData" class="pure-u-2-5">
-        <h3 style="text-align: center;">Last API Data Update: </h3>
+      <hr />
+      <h3 id="h3-last-API" style="text-align: center;">Last API Data Update : </h3>
+      <hr />
+      <section class="pure-g">
         <!-- HTML Tables are the tool of the Devil, but these look nice and actually work here -->
-        <table style="margin: 32px auto;" class="pure-table pure-table-horizontal">
-          <thead>
-            <tr>
-              <th>Raw Statistics</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Total Stars</td>
-              <td id="tdStarCountRaw"></td>
-            </tr>
-            <tr>
-              <td>Total Planets</td>
-              <td id="tdPlanetCountRaw"></td>
-            </tr>
-          </tbody>
-        </table>
-        <table style="margin: 32px auto;" class="pure-table pure-table-horizontal">
-          <thead>
-            <th>Single-Star vs Multi-Star Systems</th>
-            <th></th>
-          </thead>
-          <tbody>
+        <div class="pure-u-1-5"></div>
+        <article class="pure-u-3-5">
+          <table class="pure-table pure-table-horizontal">
+            <thead>
+              <tr><th colspan="2" align="center">Usable Star Data</th></tr>
+            </thead>
             <tbody id="tbodyCircumbinaryCounts">
             </tbody>
-          </tbody>
-        </table>
-        <table style="margin: 32px auto;" class="pure-table pure-table-horizontal">
-          <thead>
-            <tr>
-              <th>Categorical Planet Counts</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="tbodyPlanetCounts">
-          </tbody>
-        </table>
+            <thead>
+              <th>Total Stars</th>
+              <th id="tdStarCountRaw" align="right"></th>
+            </thead>
+          </table>
+          <table class="pure-table pure-table-horizontal">
+            <thead>
+              <tr><th colspan="2" align="center">Categorical Planet Counts</th></tr>
+            </thead>
+            <tbody id="tbodyPlanetCounts"></tbody>
+            <thead>
+              <th>Total Planets</th>
+              <th id="tdPlanetCountRaw" align="right"></th>
+            </thead>
+          </table>
+        </article>
+        <div class="pure-u-1-5"></div>
       </section>
-      <section class="pure-u-5-5" style="text-align: center">
+      <section style="text-align: center">
         <hr>
         <h4 id="h4RemovingStars" style="margin: 16px;">Removing stars that do not have data for Mass or Radius</h4>
+        <h4 id="h4RemovingPlanetss" style="margin: 16px;">Removing planets that do not have data for Oribital Semi-Major Axis or Eccentricity</h4>
         <i class="fa fa-arrow-circle-o-down fa-3x"></i>
         <hr>
-    </section>
-    <section class="pure-g">
-      <table style="margin: 32px auto;" class="pure-table pure-table-horizontal pure-u-5-5">
-        <thead>
-          <tr>
-            <th>Modified Statistics</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Modified Star Count</td>
-            <td id="tdStarCountModified"></td>
-          </tr>
-          <tr>
-            <td>Modified Planets Count</td>
-            <td id="tdPlanetCountModified"></td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+      </section>
+      <section class="pure-g">
+        <div class="pure-u-1-5" />
+        <article class="pure-u-3-5">
+          <table class="pure-table pure-table-horizontal">
+            <thead>
+              <tr><th colspan="2" align="center">Raw Star Data</th></tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <thead>
+              <th>Total Stars</th>
+              <th id="tdStarCountModified" align="right"></th>
+            </thead>
+          </table>
+        </article>
+        <div class="pure-u-1-5" />
+      </section>
     </main>
     <footer>
       <h4 class="pure-u-5-5">Steven J Burns &#8226; Galvanize Boulder &#8226; WDI g62</h4>
       <audio autoplay loop id="audioBackground" src="audio/data.ogg" onClick="toggleSound()">Your browser does not support the <code>audio</code> element.</audio>
     </footer>
     <script defer src="js/initAudio.js"></script>
-    <!-- <script defer src="js/initData.js"></script> -->
+    <script defer src="js/initData.js"></script>
     <script defer src="js/data.js"></script>
   </body>
 </html>

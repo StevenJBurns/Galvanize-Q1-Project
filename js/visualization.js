@@ -1,56 +1,35 @@
 "use strict";
 
-initAudio();
-
-let urlSystemsUsable = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=pl_cbflag,pl_hostname,pl_letter,st_mass,st_rad,pl_orbsmax,pl_orbeccen&where=pl_orbsmax%20is%20not%20%20null%20and%20pl_orbeccen%20is%20not%20null%20and%20st_mass%20is%20not%20null%20and%20st_rad%20is%20not%20null&order=pl_hostname,pl_letter&format=json";
-
-let systemsUsable = $.getJSON(urlSystemsUsable);
-systemsUsable.done((data) => {
-  systemsUsable = data;
-  init();
-});
-
-
 // Find the canvas via the DOM and get a 2D context to it
 let divWrapper = document.getElementById("canvas-wrapper");
 let canvas = document.getElementById("canvas-visualizer");
-let ctx = canvas.getContext("2d");
+let ctx;
 
-canvas.width = window.innerWidth;
+let runCanvasAnimation
+let currentSolarSystem;
+
+canvas.width = $(window).width() - $("#visualization-sidepanel").innerWidth();
 canvas.height = $(window).height() - ($("header").outerHeight() + $("footer").outerHeight());
 
 $(window).resize(resizeCanvas);
 
-function resizeCanvas(){
-  canvas.width = window.innerWidth;
-  canvas.height = $(window).height() - ($("header").outerHeight() + $("footer").outerHeight());
+$("#selectSolarSystem").on("change", handleSelectSolarSystem);
 
-  init();
-}
-
-let ken = new Image();
-ken.src = "images/ken.png";
+// let ken = new Image();
+// ken.src = "images/ken.png";
 
 
-// Classes -- SolarSystem class is a container class for StellarObject objects
-//  -- Star and Planet inherit from superclass StellarObject <-- REMOVED
-class SolarSystem {
-
-  constructor(star, planets){
-    this.star = new Star();
-    this.planets = [];
-  }
-}
+// Classes ------------------------------------------------------------------------------------ Start
 
 class Star {
-  constructor(){
+  constructor() {
     this.mass;
     this.radius;
     this.isBinary = false;
     this.planets = [];
   }
 
-  draw(){
+  draw() {
     let g = ctx.createRadialGradient(320, 320, 4, 320, 320, 28);
     g.addColorStop(0, "#FFFF99");
     g.addColorStop(0.05, "#FFFF99")
@@ -60,21 +39,21 @@ class Star {
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   }
 
-  drawSingleStar(){
+  drawSingle() {
 
   }
 
-  drawBinary(){
+  drawBinary() {
 
   }
 
-  update(){
+  update() {
 
   }
 }
 
 class Planet {
-  constructor(){
+  constructor() {
     // known parameters of an elliptic orbit found in the NASA database
     this.ecc = (Math.random() * 0.75) + 0.25;
     this.semiMajor = Math.floor(Math.random() * 240);
@@ -99,18 +78,18 @@ class Planet {
     this.trailPositions = [];
   }
 
-  draw(){
+  draw() {
     this.update();
     this.drawOrbit(this.radius);
     this.drawTrail();
-
-    // ctx.drawImage(ken, this.x, this.y, 32, 32)
 
     ctx.fillStyle = "#FFFFFF";
     ctx.beginPath();
     ctx.arc(this.x, this.y, 4, 0, Math.PI*2, true);
     ctx.closePath();
     ctx.fill();
+
+    // ctx.drawImage(ken, this.x, this.y, 32, 32)
   }
 
   drawOrbit(r) {
@@ -188,30 +167,77 @@ class BackgroundStarfield {
     }
   }
 
-// Test Background, Star & Planet
-let bgStars = new BackgroundStarfield();
-let star = new Star();
-let p1 = new Planet();
-let p2 = new Planet();
 
 
-function init(){
+// Page-specific function to attach global data to page elements
+function updatePageElements() {
+  for (let system of dataNormalized) {
+    let newOption = `<option value="${system.systemName}">${system.systemName}</option>`;
+
+    $("#selectSolarSystem").append(newOption);
+  }
+}
+
+function resizeCanvas(){
+  canvas.width = $(window).width() - $("#visualization-sidepanel").innerWidth();
+  canvas.height = $(window).height() - ($("header").outerHeight() + $("footer").outerHeight());
+
+  //initAnimation();
+}
+
+function handleSelectSolarSystem() {
+  runCanvasAnimation = false;
+
+  currentSolarSystem = dataNormalized.filter((system) => {return system.systemName == this.value});
+
+  $("#h4-SelectedSolarSystem").text(`Selected System : ${this.value}`);
+
+  initAnimation();
+}
+
+function initAnimation() {
+  ctx = canvas.getContext("2d");
+  runCanvasAnimation = true;
+
+  // Test Background, Star & Planets
+  bgStars = new BackgroundStarfield();
+  star = new Star();
+  p1 = new Planet();
+  p2 = new Planet();
+
   animateCanvas();
 }
 
 // Animation of the Canvas element
-function animateCanvas(){
+function animateCanvas() {
+  if (!runCanvasAnimation) {
+    // ctx.fillStyle = "black";
+    // ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);
+    ctx = null;
+    bgStars = null;
+    star = null;
+    p1 = null;
+    p2 = null;
+    return;
+  }
+
   window.requestAnimationFrame(animateCanvas);
 
   ctx.fillStyle = "black";
-  ctx.fillRect(0,0,640,640);
+  ctx.fillRect(0,0,ctx.canvas.height,ctx.canvas.width);
 
   star.draw();
-  bgStars.draw();
   p1.draw();
   p2.draw();
-}
+  bgStars.draw();
 
-// Initialize the canvas and accompanying objects
-//init();
-// Start the canvas animation; recursively calls window.requestAnimationFrame()
+}
+// Test Background, Star & Planets
+let bgStars;
+let star;
+let p1;
+let p2;
+
+initAudio();
+initAJAX();
+initAnimation();

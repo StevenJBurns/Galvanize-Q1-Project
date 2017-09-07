@@ -56,13 +56,16 @@ main {
   padding: 16px;
   color: #C7C7C7;
   background-color: #1D1D1D;
-  display: table-row;
-
+  display: table;
 }
 
 #canvas-wrapper {
-  width: 100%;
-  text-align: center;
+  /*text-align: center;*/
+  display: table-cell;
+}
+
+#canvas-big-bang {
+
 }
 
 #canvas-starfield {
@@ -71,27 +74,55 @@ main {
 }
 
 #canvas-visualizer {
-  margin: auto;
+  /*margin: auto;*/
   display: block;
 }
-#sectionData {
 
+section {
+  padding: 24px;
+}
+
+#visualization-sidepanel {
+  padding: 8px;
+  width: 480px;
+  background-color: gray;
+  vertical-align: top;
+  display: table-cell;
 }
 
 article {
-  padding: 16px;
+  margin: 8px auto;
+  padding: 8px auto;
+  text-align: justify;
+  text-justify: inter-word;
+  background-color: #595959;
+  border-radius: 12px;
+}
+
+h4 {
+  padding: 8px;
 }
 
 p {
-  margin: 16px;
+  padding: 8px;
 }
 
-.link {
+.link,
+.link:visited {
   color: #e1ce00;
 }
 
-.link:visited {
-  color: #DF7514;
+table {
+  margin: 8px auto;
+  align: center;
+}
+
+#rangeSystemSizes {
+  width: 192px;
+}
+
+#selectSolarSystem {
+  width: 192px;
 }
 
 hr {
@@ -109,4 +140,5 @@ footer {
 
 footer h4 {
   margin: 12px 0;
+  padding: 0;
 }
