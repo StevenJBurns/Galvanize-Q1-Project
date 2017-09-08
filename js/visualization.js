@@ -11,25 +11,35 @@ let currentSolarSystem;
 canvas.width = $(window).width() - $("#visualization-sidepanel").innerWidth();
 canvas.height = $(window).height() - ($("header").outerHeight() + $("footer").outerHeight());
 
-$(window).resize(resizeCanvas);
-
-$("#selectSolarSystem").on("change", handleSelectSolarSystem);
-
 // let ken = new Image();
 // ken.src = "images/ken.png";
 
 
+// Event Listeners ---------------------------------------------------------------------------- Start
+
+$(window).resize(resizeCanvas);
+
+$("#selectSolarSystem").on("change", handleSelectSolarSystem);
+
+// Event Listeners ---------------------------------------------------------------------------- End
+
 // Classes ------------------------------------------------------------------------------------ Start
 
 class Star {
-  constructor() {
-    this.mass;
-    this.radius;
-    this.isBinary = false;
+  constructor(binary, mass, radius, temperature) {
+    this.isBinary = binary;
+    this.mass = mass || 0;
+    this.radius = radius || 0;
+    this.temperature = temperature;
     this.planets = [];
   }
 
   draw() {
+    this.update();
+    this.isBinary ? this.drawBinary() : this.drawSingle();
+  }
+
+  drawSingle() {
     let g = ctx.createRadialGradient(320, 320, 4, 320, 320, 28);
     g.addColorStop(0, "#FFFF99");
     g.addColorStop(0.05, "#FFFF99")
@@ -37,10 +47,6 @@ class Star {
 
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  }
-
-  drawSingle() {
-
   }
 
   drawBinary() {
@@ -53,19 +59,20 @@ class Star {
 }
 
 class Planet {
-  constructor() {
+  constructor(name, ecc, smAxis, period) {
     // known parameters of an elliptic orbit found in the NASA database
-    this.ecc = (Math.random() * 0.75) + 0.25;
-    this.semiMajor = Math.floor(Math.random() * 240);
+    this.name = name || "";
+    this.ecc = ecc || 0;  // = (Math.random() * 0.75) + 0.25;
+    this.semiMajor = smAxis * 256 || 1;  // Math.floor(Math.random() * 240);
     this.semiMinor = Math.sqrt(Math.pow(this.semiMajor, 2) * (1 - Math.pow(this.ecc, 2)));
+    this.period = period || 365;
 
     //foci
     this.foci = Math.sqrt(Math.pow(this.semiMajor, 2) - Math.pow(this.semiMinor, 2));
 
-    // Give the planet a random theta and velocity
+    // Give the planet a random theta and angular velocity based on Period
     this.theta = Math.random() * 2 * Math.PI;
-    this.dtheta = Math.random() / 20;
-    // this.radius = Math.floor(Math.random() * 240) + 32;
+    this.dtheta = 1 / (4 * this.period);        // Math.random() / 20;
 
     // calculate radius from a given (initially random) theta and some terrifying crazy ellipse math
     this.radius = this.semiMajor * (1 - Math.pow(this.ecc, 2)) / (1 + (this.ecc * Math.cos(this.theta)))
@@ -166,8 +173,9 @@ class BackgroundStarfield {
       }
     }
   }
+  // Classes ------------------------------------------------------------------------------------ End
 
-
+  // Functions ---------------------------------------------------------------------------------- Start
 
 // Page-specific function to attach global data to page elements
 function updatePageElements() {
@@ -176,6 +184,7 @@ function updatePageElements() {
 
     $("#selectSolarSystem").append(newOption);
   }
+  initAnimation();
 }
 
 function resizeCanvas(){
@@ -189,8 +198,8 @@ function handleSelectSolarSystem() {
   currentSolarSystem = dataNormalized.find((system) => {return system.systemName == this.value});
 
   $("#h4-SelectedSystemName").text(`Selected System : ${currentSolarSystem["systemName"]}`);
-  $("#h5-SelectedSystemDistance").text(`Distance from Earth : ${currentSolarSystem["distanceToEarth"]} parsecs`);
-  $("#h5-SelectedSystemBinary").text(`Multi-Star System : ${!!+currentSolarSystem["star"].isMultiStar}`); // the !!+ is a nifty trick to turn 0/1 to true/false;
+  $("#h5-SelectedSystemDistance").text(`Distance from Earth : ${currentSolarSystem["distanceFromEarth"]} parsecs`);
+  $("#h5-SelectedSystemBinary").text(`Multi-Star System : ${!!+currentSolarSystem["star"].isBinary}`); // the !!+ is a nifty trick to turn 0/1 to true/false;
   $("#h5-SelectedSystemCount").text(`Planet Count : ${currentSolarSystem["planetCount"]}`);
 
   $("#ul-PlanetList").empty();
@@ -198,17 +207,17 @@ function handleSelectSolarSystem() {
     let newPlanet = `<li>${planet["name"]}</li>`;
     $("#ul-PlanetList").append(newPlanet);
   }
+  console.log(currentSolarSystem.getLargestPlanetRadius());
 }
 
 function initAnimation() {
   ctx = canvas.getContext("2d");
   runCanvasAnimation = true;
-
-  // Test Background, Star & Planets
   bgStars = new BackgroundStarfield();
-  star = new Star();
-  p1 = new Planet();
-  p2 = new Planet();
+
+  if (!currentSolarSystem) {
+    currentSolarSystem = dataNormalized[Math.floor(Math.random() * dataNormalized.length)];
+  }
 
   animateCanvas();
 }
@@ -221,27 +230,20 @@ function animateCanvas() {
   if (!runCanvasAnimation) {
     ctx = null;
     bgStars = null;
-    star = null;
-    p1 = null;
-    p2 = null;
     initAnimation();
     return;
   }
 
   requestAnimationFrame(animateCanvas);
 
-  star.draw();
-  p1.draw();
-  p2.draw();
+  currentSolarSystem.star.draw();
+  currentSolarSystem.planets.forEach((planet) => planet.draw());
   bgStars.draw();
 }
 
 // Test Background, Star & Planets
 let bgStars;
-let star;
-let p1;
-let p2;
 
 initAudio();
+// initLocalStorage();
 initAJAX();
-initAnimation();

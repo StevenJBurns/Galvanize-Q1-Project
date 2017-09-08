@@ -25,12 +25,16 @@ let urlDistinctPlanets = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nste
 // Classes ------------------------------------------------------------------------------------ Start
 
 class SolarSystem {
-  constructor(star) {
-    this.systemName = star.pl_hostname || "";
-    this.distanceToEarth = star.st_dist || 0;
-    this.planetCount = star.pl_pnum || 0;
+  constructor(name, dist, planetCount) {
+    this.systemName = name || "";
+    this.distanceFromEarth = dist || 0;
+    this.planetCount = planetCount || 0;
     this.star = {};
     this.planets = [];
+  }
+
+  getLargestPlanetRadius() {
+    return Math.max.apply(Math, this.planets.map((planet) => {return planet.semiMajor;}))
   }
 }
 
@@ -64,25 +68,21 @@ function normalizeData(stars, planets) {
   // Each planet will be an object in an array -- that array will be a property of the SolarSystem (i.e. solarSystem.planets)
   // The properties of stars and planets will be changed for readability and moved to the SolarSystem level if it makes sense
   for (let star of dataStars) {
-    let newSystem = new SolarSystem(star);
-    let tempStar = {"isMultiStar" : `${star.pl_cbflag}`,
-                    "mass" : `${star.st_mass}`,
-                    "radius" : `${star.st_rad}`,
-                    "temperature" : `${star.st_teff}`};
+    let newSystem = new SolarSystem(star.pl_hostname, star.st_dist, star.pl_pnum);
 
-    newSystem.star = tempStar;
+    newSystem.star = new Star(star.pl_cbflag, star.st_mass, star.st_rad, star.st_teff);
 
     for (let planet of dataPlanets) {
       if (planet.pl_hostname == star.pl_hostname) {
-        let tempPlanet = {"name" : `${star.pl_hostname} ${planet.pl_letter}`,
-                          "orbitalEccentricity" : `${planet.pl_orbeccen}`,
-                          "orbitalSemiMajorAxis" : `${planet.pl_orbsmax}`,
-                          "orbitalPeriod" : `${planet.pl_orbper}`};
+        let name = `${star.pl_hostname} ${planet.pl_letter}`;
 
-        newSystem.planets.push(tempPlanet);
+        // let tempPlanet = new Planet(name, planet.pl_orbeccen, planet.pl_orbsmax, planet.pl_orbper);
+
+        newSystem.planets.push(new Planet(name, planet.pl_orbeccen, planet.pl_orbsmax, planet.pl_orbper));
       }
     }
     dataNormalized.push(newSystem);
   }
+  // call the page-specific update function to fill elements in with data from dataNormalize
   updatePageElements();
 }
