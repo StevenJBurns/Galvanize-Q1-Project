@@ -32,29 +32,73 @@ class Star {
     this.radius = radius || 0;
     this.temperature = temperature;
     this.planets = [];
+
+    // For binaryDraw() method only !!!
+    this.thetaA = (Math.random() * Math.PI) + Math.PI;
+    this.thetaB = this.thetaA - Math.PI;
   }
 
   draw() {
-    this.update();
     this.isBinary ? this.drawBinary() : this.drawSingle();
   }
 
   drawSingle() {
-    let g = ctx.createRadialGradient(320, 320, 4, 320, 320, 28);
-    g.addColorStop(0, "#FFFF99");
-    g.addColorStop(0.05, "#FFFF99")
-    g.addColorStop(1, "#000000");
-
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    // No need to call update on a single-star system
+    let rgStar = ctx.createRadialGradient(320, 320, 4, 320, 320, 80);
+    rgStar.addColorStop(0, "#FFFF99");
+    rgStar.addColorStop(0.05, "rgba(255,255,127,255)")
+    rgStar.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = rgStar;
+    ctx.beginPath();
+    ctx.arc(320, 320, 96, 0, Math.PI*2, true);
+    ctx.closePath();
+    ctx.fill();
   }
 
   drawBinary() {
+    this.update();
 
+    // this.starA.x = (Math.cos(this.theta) * this.radius) + 320 + (2 * this.foci);
+    // this.starA.x = (Math.sin(this.theta) * this.radius) + 320;
+
+    let starA = ctx.createRadialGradient(344, 344, 4, 344, 344, 92);
+    starA.addColorStop(0, "#FFFF99");
+    starA.addColorStop(0.05, "rgba(255,255,127,127)")
+    starA.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = starA;
+    ctx.beginPath();
+    ctx.arc(344, 344, 96, 0, Math.PI*2, true);
+    ctx.closePath();
+    ctx.fill();
+
+    let starB = ctx.createRadialGradient(296, 296, 8, 296, 296, 92);
+    starB.addColorStop(0, "#FFFF99");
+    starB.addColorStop(0.05, "rgba(255,255,127,127)")
+    starB.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.globalCompositeOperation = "screen";
+    ctx.fillStyle = starB;
+    ctx.beginPath();
+    ctx.arc(296, 296, 96, 0, Math.PI*2, true);
+    ctx.closePath();
+    ctx.fill();
+    ctx.globalCompositeOperation = "source-over";
   }
 
   update() {
+    // Dont let either theta go above 2*PI radians;
+    // Similar to resetting a planet's theta to zero, B must be the opposite of A but still within the 0 to 2*PI constraint
+    if (this.thetaA >= (2 * Math.PI)) {
+      this.thetaA = 0;
+      this.thetaB = Math.PI;
+    }
 
+    if (this.thetaB >= (2 * Math.PI)) {
+      this.thetaA = Math.PI;
+      this.thetaB = 0;
+    }
+
+    this.thetaA += 0.00075;
+    this.thetaB += 0.00075;
   }
 }
 
@@ -99,6 +143,7 @@ class Planet {
     // ctx.drawImage(ken, this.x, this.y, 32, 32)
   }
 
+  // visual ellipse that just outlines the planets orbit track if desired
   drawOrbit(r) {
     ctx.strokeStyle = "#3F3F3F";
     ctx.beginPath();
@@ -110,19 +155,18 @@ class Planet {
   drawTrail(){
     let opacity = 0;
 
-    for (let trail of this.trailPositions){
-
+    for (let trail of this.trailPositions) {
       ctx.strokeStyle = `rgba(255,255,255,${opacity})`;
       ctx.beginPath();
       ctx.arc(trail.x, trail.y, 1, this.theta, this.theta - 0.1, true);
       ctx.stroke();
-
-      opacity += 0.5/this.trailLength;
+      opacity += 0.5 / this.trailLength;
     }
   }
 
   // Update the "numbers" before drawing
   update(){
+    // Dont let theta go above 2*PI radians
     if (this.theta >= (2 * Math.PI)) this.theta = 0;
 
     // Push the current x-y position into the array to generate a motion trail in drawTrail() function
@@ -216,6 +260,7 @@ function initAnimation() {
   bgStars = new BackgroundStarfield();
 
   if (!currentSolarSystem) {
+    //if the currentSolarSystem variable is empty-ish, grab a random system from dataNormalized
     currentSolarSystem = dataNormalized[Math.floor(Math.random() * dataNormalized.length)];
   }
 
@@ -225,7 +270,7 @@ function initAnimation() {
 // Animation of the Canvas element
 function animateCanvas() {
   ctx.fillStyle = "black";
-  ctx.fillRect(0,0,ctx.canvas.height,ctx.canvas.width);
+  ctx.fillRect(0, 0 , ctx.canvas.width, ctx.canvas.height);
 
   if (!runCanvasAnimation) {
     ctx = null;
