@@ -36,6 +36,11 @@ class Star {
     // For binaryDraw() method only !!!
     this.thetaA = (Math.random() * Math.PI) + Math.PI;
     this.thetaB = this.thetaA - Math.PI;
+    this.dtheta = 0.01;
+
+    this.polarRadiusA = 16;
+    this.polarRadiusB = 20;
+    this.xA, this.yA, this.xB, this.yB;
   }
 
   draw() {
@@ -58,27 +63,26 @@ class Star {
   drawBinary() {
     this.update();
 
-    // this.starA.x = (Math.cos(this.theta) * this.radius) + 320 + (2 * this.foci);
-    // this.starA.x = (Math.sin(this.theta) * this.radius) + 320;
-
-    let starA = ctx.createRadialGradient(344, 344, 4, 344, 344, 92);
-    starA.addColorStop(0, "#FFFF99");
-    starA.addColorStop(0.05, "rgba(255,255,127,127)")
-    starA.addColorStop(1, "rgba(0,0,0,0)");
+    let starA = ctx.createRadialGradient(this.xA, this.yA, 4, this.xA, this.yA, 92);
+    starA.addColorStop(0.00, "rgba(255,255,127,255)");
+    starA.addColorStop(0.10, "rgba(255,255,95,255)");
+    starA.addColorStop(0.10, "rgba(255,255,127,15)");
+    starA.addColorStop(1.00, "rgba(0,0,0,0)");
     ctx.fillStyle = starA;
     ctx.beginPath();
-    ctx.arc(344, 344, 96, 0, Math.PI*2, true);
+    ctx.arc(this.xA, this.yA, 96, 0, Math.PI*2, true);
     ctx.closePath();
     ctx.fill();
 
-    let starB = ctx.createRadialGradient(296, 296, 8, 296, 296, 92);
-    starB.addColorStop(0, "#FFFF99");
-    starB.addColorStop(0.05, "rgba(255,255,127,127)")
-    starB.addColorStop(1, "rgba(0,0,0,0)");
+    let starB = ctx.createRadialGradient(this.xB, this.yB, 8, this.xB, this.yB, 92);
+    starB.addColorStop(0.00, "rgba(255,255,127,255)");
+    starB.addColorStop(0.10, "rgba(255,255,95,255)");
+    starB.addColorStop(0.10, "rgba(255,255,127,15)");
+    starB.addColorStop(1.00, "rgba(0,0,0,0)");
     ctx.globalCompositeOperation = "screen";
     ctx.fillStyle = starB;
     ctx.beginPath();
-    ctx.arc(296, 296, 96, 0, Math.PI*2, true);
+    ctx.arc(this.xB, this.yB, 96, 0, Math.PI*2, true);
     ctx.closePath();
     ctx.fill();
     ctx.globalCompositeOperation = "source-over";
@@ -97,8 +101,13 @@ class Star {
       this.thetaB = 0;
     }
 
-    this.thetaA += 0.00075;
-    this.thetaB += 0.00075;
+    this.xA = (Math.cos(this.thetaA) * this.polarRadiusA) + 320;
+    this.yA = (Math.sin(this.thetaA) * this.polarRadiusA) + 320;
+    this.xB = (Math.cos(this.thetaB) * this.polarRadiusB) + 320;
+    this.yB = (Math.sin(this.thetaB) * this.polarRadiusB) + 320;
+
+    this.thetaA += this.dtheta;
+    this.thetaB += this.dtheta;
   }
 }
 
