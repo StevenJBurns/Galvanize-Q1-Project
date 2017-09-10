@@ -125,6 +125,23 @@ table {
   width: 256px;
 }
 
+#isotope-grid {
+  height: 300px !important;
+  overflow-y: hidden !important;
+  overflow-y: auto !important;
+}
+
+.grid-item {
+  float: left;
+  color: #FFFFFF;
+  width: 60px;
+  height: 60px;
+  font-size: 12px;
+  word-wrap: break-word;
+  background: #EEEE00;
+  border: 2px solid #b6b5b4;
+}
+
 hr {
   margin: 16px;
 }

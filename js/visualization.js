@@ -19,7 +19,7 @@ canvas.height = $(window).height() - ($("header").outerHeight() + $("footer").ou
 
 $(window).resize(resizeCanvas);
 
-$("#selectSolarSystem").on("change", handleSelectSolarSystem);
+$(".button-group-circumbinary").on("mousedown", "button", handleFilterCircumbinary);
 
 // Event Listeners ---------------------------------------------------------------------------- End
 
@@ -36,10 +36,10 @@ class Star {
     // For binaryDraw() method only !!!
     this.thetaA = (Math.random() * Math.PI) + Math.PI;
     this.thetaB = this.thetaA - Math.PI;
-    this.dtheta = 0.01;
+    this.dtheta = 0.0075;
 
-    this.polarRadiusA = 16;
-    this.polarRadiusB = 20;
+    this.polarRadiusA = 24;
+    this.polarRadiusB = 32;
     this.xA, this.yA, this.xB, this.yB;
   }
 
@@ -117,7 +117,7 @@ class Planet {
     this.name = name || "";
     this.ecc = ecc || 0;  // = (Math.random() * 0.75) + 0.25;
     this.semiMajor = smAxis * 256 || 1;  // Math.floor(Math.random() * 240);
-    this.semiMinor = Math.sqrt(Math.pow(this.semiMajor, 2) * (1 - Math.pow(this.ecc, 2)));
+    this.semiMinor = Math.sqrt(Math.pow(this.semiMajor, 2) * (1 - Math.pow(this.ecc, 2)));  // Not given; calculated once semiMajor is known
     this.period = period || 365;
 
     //foci
@@ -189,7 +189,7 @@ class Planet {
 
     // update theta for the next draw() pass; the angle produces acceleration effect AND radius is not available until theta is set
     this.theta += this.dtheta;
-    this.radius = this.semiMajor * (1 - Math.pow(this.ecc, 2)) / (1 + (this.ecc * Math.cos(this.theta)))
+    this.radius = this.semiMajor * (1 - Math.pow(this.ecc, 2)) / (1 + (this.ecc * Math.cos(this.theta)));
   }
 }
 
@@ -222,7 +222,7 @@ class BackgroundStarfield {
 
     update(){
       for (let s of this.stars){
-        s.starTheta -= 0.00075;
+        s.starTheta -= 0.0005;
       }
     }
   }
@@ -233,9 +233,22 @@ class BackgroundStarfield {
 // Page-specific function to attach global data to page elements
 function updatePageElements() {
   for (let system of dataNormalized) {
-    let newOption = `<option value="${system.systemName}">${system.systemName}</option>`;
+    let classBinary;
 
-    $("#selectSolarSystem").append(newOption);
+     system["star"].isBinary == 0 ? classBinary = "singleStar" : classBinary = "binaryStar"
+
+    $(`<div class="grid-item count-${system["planets"].length} ${classBinary}"><span>${system.systemName}</span></div>`)
+      .data("systemName", system.systemName)
+      .appendTo("#isotope-grid")
+      .on("click", handleSelectSolarSystem);
+    }
+
+  uniqueSolarSystemSizes = new Set();
+  dataStars.forEach((star) => uniqueSolarSystemSizes.add(star.pl_pnum));
+  for (let size of [...uniqueSolarSystemSizes].sort()) {
+    $(`<button class="pure-button" data-filter=".count-${size}">${size}</button>`)
+      .appendTo("#buttonGroup-SystemSizes")
+      .on("click", handleFilterSystemSize);
   }
   initAnimation();
 }
@@ -248,19 +261,30 @@ function resizeCanvas(){
 function handleSelectSolarSystem() {
   // Stop the canvas animation and get ready to draw a new solar system
   runCanvasAnimation = false;
-  currentSolarSystem = dataNormalized.find((system) => {return system.systemName == this.value});
+  currentSolarSystem = dataNormalized.find((system) => {return system.systemName == $(this).data("systemName")});
 
   $("#h4-SelectedSystemName").text(`Selected System : ${currentSolarSystem["systemName"]}`);
   $("#h5-SelectedSystemDistance").text(`Distance from Earth : ${currentSolarSystem["distanceFromEarth"]} parsecs`);
   $("#h5-SelectedSystemBinary").text(`Multi-Star System : ${!!+currentSolarSystem["star"].isBinary}`); // the !!+ is a nifty trick to turn 0/1 to true/false;
-  $("#h5-SelectedSystemCount").text(`Planet Count : ${currentSolarSystem["planetCount"]}`);
 
-  $("#ul-PlanetList").empty();
-  for (let planet of currentSolarSystem["planets"]) {
-    let newPlanet = `<li>${planet["name"]}</li>`;
-    $("#ul-PlanetList").append(newPlanet);
-  }
-  console.log(currentSolarSystem.getLargestPlanetRadius());
+  // $("#thead-SelectedSytemPlanetCount").text(`Planet Count : ${currentSolarSystem["planets"].length}`)
+  // $("#tbody-SelectedSytemPlanetList").empty();
+  // for (let planet of currentSolarSystem["planets"]) {
+  //   let newPlanet = `<tr><td>${planet["name"]}</td></tr>`;
+  //   $("#tbody-SelectedSytemPlanetList").append(newPlanet);
+  // }
+}
+
+function handleFilterSystemSize() {
+  let filterValue = $(this).attr('data-filter');
+
+  $("#isotope-grid").isotope({filter: filterValue});
+}
+
+function handleFilterCircumbinary() {
+  let filterValue = $(this).attr('data-filter');
+
+  $("#isotope-grid").isotope({filter: filterValue});
 }
 
 function initAnimation() {
@@ -297,6 +321,16 @@ function animateCanvas() {
 
 // Test Background, Star & Planets
 let bgStars;
+
+$('.isotope-grid').isotope({
+  // options
+  itemSelector: '.grid-item',
+  transitionDuration: 50,
+  layoutMode: 'fitRows',
+  stagger: 50,
+  hiddenStyle: {opacity: 0},
+  visibleStyle: {opacity: 1}
+});
 
 initAudio();
 // initLocalStorage();

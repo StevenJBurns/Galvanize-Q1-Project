@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
     <link rel="stylesheet" href="css/exoplanets.css" />
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
     <script src="https://use.fontawesome.com/3d4ad21d36.js"></script>
   </head>
   <body>
@@ -28,14 +29,33 @@
         <canvas id="canvas-visualizer">Your browser does not support HTML5 Canvas</canvas>
       </div>
       <section id="visualization-sidepanel">
-        <input id="rangeSystemSizes" type="range" name="points" min="1" max="7" />
-        <select id="selectSolarSystem" size="16"></select>
+        <h5>Filters</h5>
+        <div id="buttonGroup-SystemSizes">
+
+        </div>
+        <div class="button-group-circumbinary">
+          <button class="pure-button pure-button-primary" data-filter="*">Any</button>
+          <button class="pure-button" data-filter=".singleStar">Single</button>
+          <button class="pure-button" data-filter=".binaryStar">Binary</button>
+        </div>
+        <input id="range-SystemSizes" type="range" name="points" min="0" max="7" step="1" />
         <hr />
-        <h4 id="h4-SelectedSystemName">Selected System : </h4>
-        <h5 id="h5-SelectedSystemDistance">Distance from Earth : </h5>
-        <h5 id="h5-SelectedSystemBinary">Multi-Star System : </h5>
-        <h5 id="h5-SelectedSystemCount">Planet Count : </h5>
-        <ul id="ul-PlanetList"></ul>
+        <div id="isotope-grid"></div>
+        <hr />
+        <div>
+          <h4 id="h4-SelectedSystemName">Selected System : </h4>
+          <h5 id="h5-SelectedSystemDistance">Distance from Earth : </h5>
+          <h5 id="h5-SelectedSystemBinary">Multi-Star System : </h5>
+          <h5 id="h5-SelectedSystemCount">Planet Count : </h5>
+          <table class="pure-table pure-table-horizontal">
+            <thead>
+              <tr><th id="thead-SelectedSytemPlanetCount" align="center">Planet Count : </th></tr>
+            </thead>
+            <tbody id="tbody-SelectedSytemPlanetList">
+            </tbody>
+          </table>
+        </div>
+        <h4 style="color: #DC143C; text-align: center;">Data In Red Text Is Interpolated</h4>
       </section>
     </main>
     <footer>
