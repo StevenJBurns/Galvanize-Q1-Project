@@ -53,7 +53,6 @@ header {
 
 main {
   height: 100%;
-  padding: 16px;
   color: #C7C7C7;
   background-color: #1D1D1D;
   display: table;
@@ -126,7 +125,7 @@ table {
 }
 
 #isotope-grid {
-  height: 300px !important;
+  height: 384px !important;
   overflow-y: hidden !important;
   overflow-y: auto !important;
 }

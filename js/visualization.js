@@ -19,7 +19,7 @@ canvas.height = $(window).height() - ($("header").outerHeight() + $("footer").ou
 
 $(window).resize(resizeCanvas);
 
-$(".button-group-circumbinary").on("mousedown", "button", handleFilterCircumbinary);
+$("#buttonGroup-FilterCircumbinary").on("mousedown", "button", handleFilterCircumbinary);
 
 // Event Listeners ---------------------------------------------------------------------------- End
 
@@ -89,7 +89,7 @@ class Star {
   }
 
   update() {
-    // Dont let either theta go above 2*PI radians;
+    // Dont let either theta go above 2*PI radians in a binary system (or any drawable object for that matter);
     // Similar to resetting a planet's theta to zero, B must be the opposite of A but still within the 0 to 2*PI constraint
     if (this.thetaA >= (2 * Math.PI)) {
       this.thetaA = 0;
@@ -247,7 +247,7 @@ function updatePageElements() {
   dataStars.forEach((star) => uniqueSolarSystemSizes.add(star.pl_pnum));
   for (let size of [...uniqueSolarSystemSizes].sort()) {
     $(`<button class="pure-button" data-filter=".count-${size}">${size}</button>`)
-      .appendTo("#buttonGroup-SystemSizes")
+      .appendTo("#buttonGroup-FilterSystemSizes")
       .on("click", handleFilterSystemSize);
   }
   initAnimation();
@@ -263,9 +263,7 @@ function handleSelectSolarSystem() {
   runCanvasAnimation = false;
   currentSolarSystem = dataNormalized.find((system) => {return system.systemName == $(this).data("systemName")});
 
-  $("#h4-SelectedSystemName").text(`Selected System : ${currentSolarSystem["systemName"]}`);
-  $("#h5-SelectedSystemDistance").text(`Distance from Earth : ${currentSolarSystem["distanceFromEarth"]} parsecs`);
-  $("#h5-SelectedSystemBinary").text(`Multi-Star System : ${!!+currentSolarSystem["star"].isBinary}`); // the !!+ is a nifty trick to turn 0/1 to true/false;
+  // the !!+ is a nifty trick to turn 0/1 to true/false;
 
   // $("#thead-SelectedSytemPlanetCount").text(`Planet Count : ${currentSolarSystem["planets"].length}`)
   // $("#tbody-SelectedSytemPlanetList").empty();
@@ -279,12 +277,19 @@ function handleFilterSystemSize() {
   let filterValue = $(this).attr('data-filter');
 
   $("#isotope-grid").isotope({filter: filterValue});
+
+  // update which button is visually selected
+  $("#buttonGroup-FilterSystemSizes").find(".pure-button-primary").removeClass("pure-button-primary");
+  $(this).addClass("pure-button-primary");
 }
 
 function handleFilterCircumbinary() {
   let filterValue = $(this).attr('data-filter');
 
   $("#isotope-grid").isotope({filter: filterValue});
+
+  $("#buttonGroup-FilterCircumbinary").find(".pure-button-primary").removeClass("pure-button-primary");
+  $(this).addClass("pure-button-primary");
 }
 
 function initAnimation() {
@@ -293,7 +298,7 @@ function initAnimation() {
   bgStars = new BackgroundStarfield();
 
   if (!currentSolarSystem) {
-    //if the currentSolarSystem variable is empty-ish, grab a random system from dataNormalized
+    // If the currentSolarSystem variable is empty-ish, grab a random system from dataNormalized
     currentSolarSystem = dataNormalized[Math.floor(Math.random() * dataNormalized.length)];
   }
 
@@ -317,19 +322,28 @@ function animateCanvas() {
   currentSolarSystem.star.draw();
   currentSolarSystem.planets.forEach((planet) => planet.draw());
   bgStars.draw();
+
+  // Write solar system info directly on the canvas
+  ctx.fillStyle = "#F7F7F7";
+  ctx.font = "Bold 20px Futura";
+  ctx.fillText(`Current System : ${currentSolarSystem.systemName}`, 16, 32);
+  ctx.font = "16px Futura";
+  ctx.fillText(`Distance From Earth : ${currentSolarSystem.distanceFromEarth} parsecs`, 16, 48);
+  ctx.fillText(`Star Effective Temp : ${currentSolarSystem.temperature}`, 16, 64);
+  ctx.fillText(`Star Luminosity : `, 16, 80);
 }
 
-// Test Background, Star & Planets
+// Background stars...
 let bgStars;
 
+// Options for the Isotope container in JSON
 $('.isotope-grid').isotope({
-  // options
+  layoutMode: 'fitRows',
   itemSelector: '.grid-item',
   transitionDuration: 50,
-  layoutMode: 'fitRows',
-  stagger: 50,
   hiddenStyle: {opacity: 0},
-  visibleStyle: {opacity: 1}
+  visibleStyle: {opacity: 1},
+  stagger: 50,
 });
 
 initAudio();

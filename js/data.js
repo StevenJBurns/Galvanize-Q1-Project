@@ -4,6 +4,56 @@
 // Global Variables --------------------------------------------------------------------------- End
 
 // Classes ------------------------------------------------------------------------------------ Start
+
+// Same class as Star from the visualization.js file but without all the drawing methods
+class Star {
+  constructor(binary, mass, radius, temperature) {
+    this.isBinary = binary;
+    this.mass = mass || 0;
+    this.radius = radius || 0;
+    this.temperature = temperature;
+    this.planets = [];
+
+    // For binaryDraw() method only !!!
+    this.thetaA = (Math.random() * Math.PI) + Math.PI;
+    this.thetaB = this.thetaA - Math.PI;
+    this.dtheta = 0.0075;
+
+    this.polarRadiusA = 24;
+    this.polarRadiusB = 32;
+    this.xA, this.yA, this.xB, this.yB;
+  }
+}
+
+// Same class as Planet from the visualization.js file but without all the drawing methods
+class Planet {
+  constructor(name, ecc, smAxis, period) {
+    // known parameters of an elliptic orbit found in the NASA database
+    this.name = name || "";
+    this.ecc = ecc || 0;  // = (Math.random() * 0.75) + 0.25;
+    this.semiMajor = smAxis * 256 || 1;  // Math.floor(Math.random() * 240);
+    this.semiMinor = Math.sqrt(Math.pow(this.semiMajor, 2) * (1 - Math.pow(this.ecc, 2)));  // Not given; calculated once semiMajor is known
+    this.period = period || 365;
+
+    //foci
+    this.foci = Math.sqrt(Math.pow(this.semiMajor, 2) - Math.pow(this.semiMinor, 2));
+
+    // Give the planet a random theta and angular velocity based on Period
+    this.theta = Math.random() * 2 * Math.PI;
+    this.dtheta = 1 / (4 * this.period);        // Math.random() / 20;
+
+    // calculate radius from a given (initially random) theta and some terrifying crazy ellipse math
+    this.radius = this.semiMajor * (1 - Math.pow(this.ecc, 2)) / (1 + (this.ecc * Math.cos(this.theta)))
+
+    //convert polar (theta, radius) to cartesian (x, y)
+    this.x = (Math.cos(this.theta) * this.radius) + 320 + this.foci;
+    this.y = (Math.sin(this.theta) * this.radius) + 320;
+
+    this.trailLength = 128;
+    this.trailPositions = [];
+  }
+}
+
 // Classes ------------------------------------------------------------------------------------ End
 
 

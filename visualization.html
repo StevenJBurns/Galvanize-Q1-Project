@@ -30,23 +30,16 @@
       </div>
       <section id="visualization-sidepanel">
         <h5>Filters</h5>
-        <div id="buttonGroup-SystemSizes">
-
-        </div>
-        <div class="button-group-circumbinary">
-          <button class="pure-button pure-button-primary" data-filter="*">Any</button>
+        <div id="buttonGroup-FilterSystemSizes"></div>
+        <div id="buttonGroup-FilterCircumbinary">
+          <button class="pure-button" data-filter="*">Any</button>
           <button class="pure-button" data-filter=".singleStar">Single</button>
           <button class="pure-button" data-filter=".binaryStar">Binary</button>
         </div>
-        <input id="range-SystemSizes" type="range" name="points" min="0" max="7" step="1" />
         <hr />
         <div id="isotope-grid"></div>
         <hr />
         <div>
-          <h4 id="h4-SelectedSystemName">Selected System : </h4>
-          <h5 id="h5-SelectedSystemDistance">Distance from Earth : </h5>
-          <h5 id="h5-SelectedSystemBinary">Multi-Star System : </h5>
-          <h5 id="h5-SelectedSystemCount">Planet Count : </h5>
           <table class="pure-table pure-table-horizontal">
             <thead>
               <tr><th id="thead-SelectedSytemPlanetCount" align="center">Planet Count : </th></tr>
